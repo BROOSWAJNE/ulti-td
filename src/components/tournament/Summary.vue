@@ -55,6 +55,7 @@ export default {
     },
     methods: {
         fetchTeams: function() {
+            if (!this.tournament) return;
             this.loading.teams = true;
             this.$api.get('/team/tournament/' + this.tournament._id).then((res) => {
                 this.teams = res.data;
