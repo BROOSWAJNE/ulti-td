@@ -83,12 +83,15 @@ export default {
                 margin-right: 3px
             &:hover
                 opacity: 0.7
-                
+
     .body
         margin: auto
         display: flex
         flex-flow: column
         width: 80vw
+
+        @media only screen and (max-width: 900px)
+            width: 95vw
 
     .title
         grid-area: title
@@ -101,6 +104,8 @@ export default {
         text-overflow: ellipsis
         white-space: nowrap
         margin-bottom: 20px
+        @media only screen and (max-width: 900px)
+            font-size: 3em
 
     .list-container
         overflow-y: auto
@@ -109,7 +114,7 @@ export default {
 
         .tournament, .headings
             display: grid
-            grid-template-columns: minmax(100px, 200px) minmax(100px, 200px) minmax(100px, 1fr)
+            grid-template-columns: minmax(100px, 200px) minmax(50px, 160px) minmax(100px, 1fr)
             grid-gap: 5px
             padding: 10px 5px
             .property
