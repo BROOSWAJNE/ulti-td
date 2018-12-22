@@ -7,8 +7,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/index.html --https --cert config/keys/server.crt --key config/keys/key.pem",
     "watch": "parcel watch src/index.html --https --cert config/keys/server.crt --key config/keys/key.pem",
-    "production": "npm run lint && parcel build src/index.html && node server/server.js",
-    "lint": "eslint . --ext .js,.vue"
+    "build": "parcel build src/index.html",
+    "start": "node server/server.js",
+    "lint": "eslint . --ext .js,.vue",
+    "postinstall": "npm run lint && npm run build"
   },
   "author": "Willem Garnier",
   "license": "ISC",
@@ -20,14 +22,14 @@
     "moment": "^2.22.2",
     "mongodb": "^3.1.10",
     "mongoose": "^5.3.13",
-    "vue-hot-reload-api": "^2.3.1"
+    "vue-hot-reload-api": "^2.3.1",
+    "eslint": "^5.9.0",
+    "eslint-plugin-vue": "^4.7.1",
+    "parcel-bundler": "^1.11.0",
   },
   "devDependencies": {
     "@vue/component-compiler-utils": "^2.3.1",
     "axios": "^0.18.0",
-    "eslint": "^5.9.0",
-    "eslint-plugin-vue": "^4.7.1",
-    "parcel-bundler": "^1.11.0",
     "sass": "^1.15.2",
     "vue": "^2.5.21",
     "vue-router": "^3.0.2",
