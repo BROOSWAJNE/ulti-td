@@ -6,9 +6,10 @@
             v-on:click="expanded.new = !expanded.new; expanded.new ? $refs.input_new.focus() : $refs.input_new.blur()">
             New Tournament
         </button>
-        <div class="input" v-bind:class="{ expanded : expanded.new, disabled: !expanded }">
+        <div class="input" v-bind:class="{ expanded : expanded.new }">
             <input type="text" class="input name has-submit" 
                 placeholder="Tournament Name"
+                v-bind:class="{ disabled: !expanded.new }"
                 v-model="inputs.new" ref="input_new"
                 v-on:keyup.enter="onCreateNewTournament">
             <button class="input-submit-button"
@@ -23,9 +24,10 @@
             v-on:click="expanded.find = !expanded.find; expanded.find ? $refs.input_find.focus() : $refs.input_find.blur()">
             Find Tournament
         </button>
-        <div class="input" v-bind:class="{ expanded : expanded.find, disabled: !expanded }">
-            <input type="text" class="input name has-submit" 
+        <div class="input" v-bind:class="{ expanded : expanded.find }">
+            <input type="text" class="input name has-submit"
                 placeholder="Tournament Name"
+                v-bind:class="{ disabled: !expanded.find }"
                 v-model="inputs.find" ref="input_find"
                 v-on:keyup.enter="onFindTournament">
             <button class="input-submit-button"
