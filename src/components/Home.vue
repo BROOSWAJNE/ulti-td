@@ -3,10 +3,10 @@
     <div class="title">Ulti.TD</div>
     <div class="action new">
         <button class="button action-button"
-            v-on:click="expanded.new = !expanded.new; $refs.input_new.focus()">
+            v-on:click="expanded.new = !expanded.new; expanded.new ? $refs.input_new.focus() : $refs.input_new.blur()">
             New Tournament
         </button>
-        <div class="input" v-bind:class="{ expanded : expanded.new }">
+        <div class="input" v-bind:class="{ expanded : expanded.new, disabled: !expanded }">
             <input type="text" class="input name has-submit" 
                 placeholder="Tournament Name"
                 v-model="inputs.new" ref="input_new"
@@ -20,10 +20,10 @@
     </div>
     <div class="action find">
         <button class="button action-button ghost-button"
-            v-on:click="expanded.find = !expanded.find; $refs.input_find.focus()">
+            v-on:click="expanded.find = !expanded.find; expanded.find ? $refs.input_find.focus() : $refs.input_find.blur()">
             Find Tournament
         </button>
-        <div class="input" v-bind:class="{ expanded : expanded.find }">
+        <div class="input" v-bind:class="{ expanded : expanded.find, disabled: !expanded }">
             <input type="text" class="input name has-submit" 
                 placeholder="Tournament Name"
                 v-model="inputs.find" ref="input_find"
