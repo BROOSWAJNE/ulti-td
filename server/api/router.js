@@ -16,7 +16,7 @@ _.each(fs.readdirSync(path.resolve(__dirname, './models')), function(model) {
 });
 
 const db = {
-    url: 'mongodb://localhost/td',
+    url: process.env.DB_URL || 'mongodb://localhost/td',
     options: { useNewUrlParser: true }
 };
 
