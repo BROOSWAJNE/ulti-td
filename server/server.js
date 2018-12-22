@@ -41,7 +41,7 @@ app.get('*', function(req, res, next) {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
-const port = 4000;
+const port = process.env.PORT || 4000;
 https.createServer({
     key: fs.readFileSync('config/keys/key.pem'),
     cert: fs.readFileSync('config/keys/server.crt')
