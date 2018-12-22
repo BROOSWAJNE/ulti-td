@@ -1,0 +1,95 @@
+@import "./variables"
+
+$button-color: hsl(153, 16%, 78%)
+a
+    text-decoration: none
+    color: hsl(153, 16%, 25%)
+    &:hover
+        color: hsl(153, 16%, 10%)
+
+input, textarea
+    padding: 2px 5px
+    border: none
+    box-sizing: border-box
+
+    background-color: rgba(0,0,0,0.05)
+    border-bottom: 2px solid $button-color
+    border-radius: 3px
+
+    &.has-submit
+        padding-right: 30px
+    
+    &.invalid
+        border-bottom: 2px solid red
+
+textarea
+    padding: 10px 5px
+
+button
+    padding: 10px
+    border: none
+    border-radius: 50px
+
+    display: flex
+    align-items: center
+    justify-content: center
+
+    cursor: pointer
+    user-select: none
+
+    background-color: $button-color
+    color: hsl(113, 64%, 94%)
+    &:hover
+        background-color: darken($button-color, 2.5%)
+
+    &.action-button
+        text-transform: uppercase
+        font-weight: bold
+        padding: 20px 40px
+        border-radius: 3px
+        border: 2px solid $button-color
+    
+    &.ghost-button
+        background: var(--background-color)
+        color: hsl(113, 64%, 20%)
+        border: 2px solid $button-color
+
+        &:hover
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025)) var(--background-color)
+    
+    &.input-submit-button
+        border-radius: 0 3px 3px 0
+        height: 100%
+
+    &.text-button
+        background: unset
+        padding: unset
+        color: initial
+        border: none
+        opacity: 0.8
+        &:hover
+            background-color: unset
+            opacity: 1
+            
+
+    &.disabled
+        pointer-events: none !important
+        background: lighten($button-color, 10%)
+        border: 2px solid lighten($button-color, 10%)
+
+.checkbox
+    display: inline-flex
+    cursor: pointer
+    color: $button-color
+    &:hover
+        color: darken($button-color, 2.5%)
+
+    &:not(.checked)
+        .fa-check-square
+            display: none
+    &.checked
+        .fa-square
+            display: none
+
+.hidden
+    display: none
