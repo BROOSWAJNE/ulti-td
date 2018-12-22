@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "parcel src/index.html --https --cert config/keys/server.crt --key config/keys/key.pem",
     "watch": "parcel watch src/index.html --https --cert config/keys/server.crt --key config/keys/key.pem",
-    "production": "parcel build src/index.html",
+    "production": "npm run lint && parcel build src/index.html && node server/server.js",
     "lint": "eslint . --ext .js,.vue"
   },
   "author": "Willem Garnier",

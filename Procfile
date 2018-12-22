@@ -1,1 +1,1 @@
-web: node server/server.js
+web: mpm run production

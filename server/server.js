@@ -42,9 +42,15 @@ app.get('*', function(req, res, next) {
 });
 
 const port = process.env.PORT || 4000;
-https.createServer({
-    key: fs.readFileSync('config/keys/key.pem'),
-    cert: fs.readFileSync('config/keys/server.crt')
-}, app).listen(port, function() {
-    logger.info('Server started successfully. Listening @ 127.0.0.1:' + port);
-});
+if (process.env.NODE_ENV === 'production') { // TODO: enable https for prod
+    app.listen(port, function() {
+        logger.info('Production server started successfully. Listening @' + port);
+    });
+} else {
+    https.createServer({
+        key: fs.readFileSync('config/keys/key.pem'),
+        cert: fs.readFileSync('config/keys/server.crt')
+    }, app).listen(port, function() {
+        logger.info('Server started successfully. Listening @ 127.0.0.1:' + port);
+    });
+}
