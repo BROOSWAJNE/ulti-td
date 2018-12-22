@@ -123,11 +123,16 @@ export default {
         margin: 0 auto 50px auto
         padding-bottom: 10px
 
+        @media only screen and (max-width: 900px)
+            font-size: 3em
+
     .description
         grid-area: desc
         display: flex
         justify-content: center
         margin-bottom: 50px
+        white-space: pre-wrap
+        text-align: center
 
     section
         display: flex
@@ -137,6 +142,8 @@ export default {
             font-size: 2.5em
             display: flex
             justify-content: center
+            @media only screen and (max-width: 900px)
+                font-size: 2em
 
         .empty-message
             display: flex
