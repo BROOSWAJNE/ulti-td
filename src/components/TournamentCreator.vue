@@ -7,13 +7,21 @@
             <span class="text">Back</span>
         </button>
     </div>
-    <div class="creator-container">
+    <div class="success-container" v-if="created">
+        <span class="message">Success! Your tournament is live at:</span>
+        <pre class="link">{{ tournament_url }}</pre>
+        <span class="message">
+            You can use your <router-link v-bind:to="{ name: 'tournament', params: { moniker: moniker }}">admin page</router-link> to add teams to the tournament.
+        </span>
+    </div>
+    <div class="creator-container" v-if="!created">
         <div class="title">{{ name ? name : 'Unnamed Tournament' }}</div>
         <section class="tournament-settings">
             <span class="section-title">Tournament Info</span>
             <label for="name">Name</label>
             <input type="text" v-model="name"
-                v-on:keyup="onKeyupName">
+                v-on:keyup="onKeyupName"
+                v-bind:class="{ disabled : saving }">
             <label for="moniker"
                 title="The unique identifier used to create the link to your tournament">
                 Identifier <span class="example-url">
@@ -22,15 +30,15 @@
             </label>
             <input type="text" class="input moniker" v-model="moniker"
                 v-on:keyup="user_moniker = true; moniker_exists = false" tabindex="-1"
-                v-bind:class="{ auto : !user_moniker, invalid : moniker_exists }">
+                v-bind:class="{ auto : !user_moniker, invalid : moniker_exists, disabled: saving }">
             <label for="description">Description</label>
-            <textarea cols="30" rows="10" v-model="description"></textarea>
+            <textarea cols="30" rows="10" v-model="description" v-bind:class="{ disabled : saving }"></textarea>
         </section>
         <section class="spirit-settings">
             <span class="section-title">Spirit Settings</span>
             <div class="setting spirit-extreme"
                 v-on:click="extreme_comments = !extreme_comments"
-                v-bind:class="{ disabled : enforce_comments }"
+                v-bind:class="{ disabled : enforce_comments || saving }"
                 title="Forces teams to leave comments when giving spirit scores of 0 or 4 in any category">
                 <div class="checkbox" v-bind:class="{ checked : enforce_comments || extreme_comments }"
                     tabindex="0" v-on:keyup.space="extreme_comments = !extreme_comments">
@@ -41,6 +49,7 @@
             </div>
             <div class="setting spirit-enforce"
                 v-on:click="enforce_comments = !enforce_comments"
+                v-bind:class="{ disabled : saving }"
                 title="Forces teams to leave comments when giving spirit scores lower/higher than 2 in any category">
                 <div class="checkbox" v-bind:class="{ checked : enforce_comments }"
                     tabindex="0" v-on:keyup.space="enforce_comments = !enforce_comments">
@@ -57,7 +66,7 @@
                 tournament settings, view teams entered, review spirit scores, and more.
             </span>
             <label for="password">Admin Password</label>
-            <input type="password" v-model="admin_pass">
+            <input type="password" v-model="admin_pass" v-bind:class="{ disabled : saving }">
         </section>
         <span class="error-message">{{ error }}</span>
         <button class="submit action-button"
@@ -74,6 +83,7 @@ export default {
         return {
             saving: false,
             error: '',
+            created: false,
             moniker_exists: false,
             // tournament data
             name: this.$route.query.name || '',
@@ -84,6 +94,12 @@ export default {
             enforce_comments: false,
             admin_pass: ''
         };
+    },
+    computed: {
+        tournament_url: function() {
+            let url = new URL('/t/' + this.moniker, window.location);
+            return url.href;
+        }
     },
     methods: {
         onKeyupName: function() {
@@ -119,10 +135,7 @@ export default {
                 }
                 return this.$api.post('/tournament/new', this.getTournamentData());
             }).then((res) => {
-                this.$router.push({
-                    name: 'tournament',
-                    params: { moniker: this.moniker }
-                });
+                this.created = true;
             }).catch((err) => {
                 if (typeof err === 'string') this.error = err;
                 else this.error = 'An unknown error occured';
@@ -156,6 +169,17 @@ export default {
                 margin-right: 3px
             &:hover
                 opacity: 0.7
+
+    .success-container
+        margin: auto
+        text-align: center
+        max-width: 90vw
+        .link
+            user-select: all
+            overflow: hidden
+        .message
+            a
+                font-weight: bold
 
     .creator-container
         display: grid
