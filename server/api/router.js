@@ -109,6 +109,18 @@ mongoose.connect(db.url, db.options, function(err) {
         });
     });
 
+    // initialize auth endpoints
+    _.each(models, function(model, name) {
+        _.each(model.auth_routes, function(routes, method) {
+            _.each(routes, function(fn, route) {
+                if (_.isArray(fn)) // has middleware
+                    router[method].apply(router, ['/auth/'+name+route].concat(fn));
+                else
+                    router[method]('/auth/'+name+route, fn);
+            });
+        });
+    });
+
     logger.info('Initialized all api routes');
 
     // 404 fallback if not caught by routes
