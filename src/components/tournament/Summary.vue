@@ -10,6 +10,12 @@
     <div class="loading-view" v-if="loading.tournament">Loading...</div>
     <div class="not-found" v-if="!loading.tournament && !tournament">Tournament not found</div>
     <div class="body" v-if="!loading.tournament && tournament">
+        <div class="links">
+            <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }" class="link">
+                <i class="fas fa-tools"></i>
+                <span class="label">Admin Panel</span>
+            </router-link>
+        </div>
         <span class="title">{{ tournament.name }}</span>
         <span class="description">{{ decodeURIComponent(tournament.settings.description) }}</span>
         <section class="teams">
@@ -36,7 +42,7 @@ export default {
     name: 'TournamentSummary',
     props: ['moniker'],
     created: function() {
-        this.$api.get('/tournament/moniker/'+this.moniker).then((res) => {
+        this.$api.get('/tournament/moniker/' + this.moniker).then((res) => {
             this.tournament = res.data;
             this.loading.tournament = false;
 
@@ -101,11 +107,21 @@ export default {
         grid-template-rows: auto auto minmax(200px, 1fr) minmax(200px, 1fr)
 
         width: 80vw
-
         @media only screen and (max-width: 900px)
             grid-template-areas: "title title" "desc desc" "teams teams" "results results" "spirit spirit"
             grid-template-rows: auto auto repeat(3, minmax(200px, 1fr))
             width: 95vw
+
+        position: relative
+        .links
+            position: absolute
+            top: 0
+            right: 0
+
+            height: 20px
+            display: flex
+            align-items: center
+            font-weight: bold
 
     .title
         grid-area: title
