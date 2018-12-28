@@ -70,6 +70,18 @@ mongoose.connect(db.url, db.options, function(err) {
             });
         });
 
+        // patch document
+        router.patch('/' + name + '/:id', bodyParser.json(), function(req, res, next) {
+            logger.log(req.method, req.originalUrl, '\n', req.body);
+
+            model.model.findByIdAndUpdate(req.params.id, req.body, {
+                new: true, // return new doc instead of original
+            }, function(err, result) {
+                if (err) return next(err);
+                res.status(200).json(result);      
+            });
+        });
+
         //! TODO: add option to disable certain default methods in model exports
         // delete existing element
         router.delete('/' + name + '/:id', function(req, res, next) {
