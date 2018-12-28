@@ -65,5 +65,28 @@ module.exports = {
                 }
             ]
         }
+    },
+    auth_routes: {
+        'post': {
+            '/moniker/:moniker': [
+                bodyParser.json(),
+                function(req, res, next) {
+                    logger.log(req.method, req.originalUrl, '\n', req.body);
+
+                    if (!req.body.password) return res.status(422).send('Invalid request body');
+
+                    TournamentModel.findOne({
+                        moniker: encodeURIComponent(req.params.moniker)
+                    }, '+password', function(err, result) {
+                        if (err) return next(err);
+
+                        if (req.body.password === result.password)
+                            res.status(200).json(result);
+                        else
+                            res.status(401).send('Unauthorized');
+                    });
+                }
+            ]
+        }
     }
 };
