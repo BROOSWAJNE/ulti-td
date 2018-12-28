@@ -9,13 +9,18 @@
     </div>
     <div class="loading-view" v-if="loading.tournament">Loading...</div>
     <div class="not-found" v-if="!loading.tournament && !tournament">Tournament not found</div>
+    <div class="links">
+        <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }"
+            tag="button" class="link" title="Admin Panel">
+            <i class="fas fa-fw fa-tools"></i>
+            <!-- <span class="label">Admin Panel</span> -->
+        </router-link>
+        <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }"
+            tag="button" class="link" title="Team Panel">
+            <i class="fas fa-fw fa-users"></i>
+        </router-link>
+    </div>
     <div class="body" v-if="!loading.tournament && tournament">
-        <div class="links">
-            <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }" class="link">
-                <i class="fas fa-tools"></i>
-                <span class="label">Admin Panel</span>
-            </router-link>
-        </div>
         <span class="title">{{ tournament.name }}</span>
         <span class="description">{{ decodeURIComponent(tournament.settings.description) }}</span>
         <section class="teams">
@@ -97,6 +102,30 @@ export default {
         margin: auto
         opacity: 0.5
 
+    .links
+        position: absolute
+        top: 0
+        left: 5px
+
+        height: 100vh
+        width: 10vw // space left over to right of body
+        // TODO use sass' equivalent of calc
+        display: flex
+        flex-flow: column
+        align-items: flex-start
+        justify-content: center
+        font-weight: bold
+
+        .link
+            padding: 10px
+            background-color: hsl(153, 16%, 45%)
+            border-radius: 3px
+            font-size: 1.5em
+            &:not(:last-of-type)
+                margin-bottom: 5px
+            &:hover
+                background-color: hsl(153, 16%, 35%)
+
     .body
         margin: auto
         padding: 20px 0
@@ -113,15 +142,6 @@ export default {
             width: 95vw
 
         position: relative
-        .links
-            position: absolute
-            top: 0
-            right: 0
-
-            height: 20px
-            display: flex
-            align-items: center
-            font-weight: bold
 
     .title
         grid-area: title
@@ -137,6 +157,7 @@ export default {
         border-bottom: 2px solid hsl(153, 16%, 78%)
 
         width: fit-content
+        max-width: 100%
         margin: 0 auto 50px auto
         padding-bottom: 10px
 
