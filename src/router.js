@@ -5,6 +5,7 @@ import Home from './components/Home';
 import TournamentCreator from './components/TournamentCreator';
 import TournamentList from './components/TournamentList';
 import TournamentSummary from './components/tournament/Summary';
+import TournamentSettings from './components/tournament/Admin';
 
 Vue.use(Router);
 
@@ -30,6 +31,12 @@ export default new Router({
             path: '/t/:moniker',
             name: 'tournament',
             component: TournamentSummary,
+            props: true
+        },
+        {
+            path: '/t/:moniker/settings',
+            name: 'tournament-settings',
+            component: TournamentSettings,
             props: true
         }
     ]
