@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const Schema = mongoose.Schema;
 
 const TournamentSchema = new Schema({
@@ -43,6 +44,26 @@ module.exports = {
                     res.status(200).json(result);
                 });
             }
+        },
+        'patch': {
+            '/:id': [
+                bodyParser.json(),
+                function(req, res, next) {
+                    logger.log(req.method, req.originalUrl, '\n', req.body);
+
+                    TournamentModel.findById(req.params.id, '+password', function(err, tournament) {
+                        if (err) return next(err);
+                        _.each(req.body, (value, key) => {
+                            if (tournament[key] === value) return;
+                            tournament[key] = value;
+                        });
+                        tournament.save(function(err, result) {
+                            if (err) return next(err);
+                            res.status(200).json(result);
+                        });
+                    });
+                }
+            ]
         }
     }
 };
