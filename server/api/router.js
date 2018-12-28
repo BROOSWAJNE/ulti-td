@@ -78,7 +78,7 @@ mongoose.connect(db.url, db.options, function(err) {
                 new: true, // return new doc instead of original
             }, function(err, result) {
                 if (err) return next(err);
-                res.status(200).json(result);      
+                res.status(200).json(result);
             });
         });
 
