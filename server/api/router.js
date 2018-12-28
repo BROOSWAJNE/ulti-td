@@ -41,7 +41,7 @@ mongoose.connect(db.url, db.options, function(err) {
 
         // get single document by id
         router.get('/' + name + '/:id', function(req, res, next) {
-            logger.log(req.method, req.originalUrl, '\nid:', req.params.id);
+            logger.log(req.method, req.originalUrl);
 
             model.model.findById(req.params.id, function(err, result) {
                 if (err) return next(err);
@@ -70,9 +70,10 @@ mongoose.connect(db.url, db.options, function(err) {
             });
         });
 
+        //! TODO: add option to disable certain default methods in model exports
         // delete existing element
         router.delete('/' + name + '/:id', function(req, res, next) {
-            logger.log(req.method, req.originalUrl, '\nid:', req.params.id);
+            logger.log(req.method, req.originalUrl);
             model.model.deleteOne({ _id: req.params.id }, function(err) {
                 if (err) return next(err);
                 res.status(200).send('Success');
