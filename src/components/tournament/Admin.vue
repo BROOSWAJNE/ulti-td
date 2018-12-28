@@ -2,7 +2,7 @@
 <div class="TournamentSettings">
     <div class="controls">
         <button class="text-button" tabindex="-1"
-            v-on:click="$router.push('/')">
+            v-on:click="$router.go(-1)">
             <i class="icon fas fa-angle-left"></i>
             <span class="text">Back</span>
         </button>

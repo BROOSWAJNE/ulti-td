@@ -2,7 +2,7 @@
 <div class="TournamentSummary">
     <div class="controls">
         <button class="text-button" tabindex="-1"
-            v-on:click="$router.push('/')">
+            v-on:click="$router.go(-1)">
             <i class="icon fas fa-angle-left"></i>
             <span class="text">Back</span>
         </button>
@@ -84,7 +84,7 @@ export default {
         left: 0
         padding: 20px
         font-size: 1.5em
-        
+
         button
             font-weight: bold
             opacity: 0.5
@@ -92,7 +92,7 @@ export default {
                 margin-right: 3px
             &:hover
                 opacity: 0.7
-    
+
     .loading-view, .not-found
         margin: auto
         opacity: 0.5
@@ -100,7 +100,7 @@ export default {
     .body
         margin: auto
         padding: 20px 0
-        
+
         display: grid
         grid-template-areas: "title title" "desc desc" "teams results" "teams spirit"
         grid-template-columns: 50% 50%

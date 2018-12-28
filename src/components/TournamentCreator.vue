@@ -2,7 +2,7 @@
 <div class="TournamentCreator">
     <div class="controls">
         <button class="text-button" tabindex="-1"
-            v-on:click="$router.push('/')">
+            v-on:click="$router.go(-1)">
             <i class="icon fas fa-angle-left"></i>
             <span class="text">Back</span>
         </button>
@@ -62,7 +62,7 @@
         <section class="admin-settings">
             <span class="section-title">Admin Settings</span>
             <span class="section-description">
-                These settings control how you and other tournament admins/TDs will log-in to edit 
+                These settings control how you and other tournament admins/TDs will log-in to edit
                 tournament settings, view teams entered, review spirit scores, and more.
             </span>
             <label for="password">Admin Password</label>
@@ -161,7 +161,7 @@ export default {
         left: 0
         padding: 20px
         font-size: 1.5em
-        
+
         button
             font-weight: bold
             opacity: 0.5
@@ -215,7 +215,7 @@ export default {
 
             @media only screen and (max-width: 900px)
                 font-size: 3em
-        
+
         .error-message
             grid-area: err
             display: flex
