@@ -15,7 +15,7 @@
         <div class="links" v-if="settings.links.length">
             <router-link v-for="(link, idx) in settings.links" v-bind:key="idx"
                 v-bind:to="link.to" v-bind:title="link.title"
-                tag="button" class="link">
+                tag="button" class="link" tabindex="-1">
                 <i class="fas fa-fw" v-bind:class="link.icon"></i>
                 <!-- <span class="label">Admin Panel</span> -->
             </router-link>
