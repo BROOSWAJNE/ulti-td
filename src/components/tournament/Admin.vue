@@ -1,8 +1,5 @@
 <template>
 <div class="TournamentSettings">
-    <NavigationView
-        v-bind:settings="nav_settings">
-    </NavigationView>
     <div class="auth-container" v-if="!authenticated">
         <label for="password">Admin Password</label>
         <div class="input">
@@ -70,14 +67,9 @@
 </template>
 
 <script>
-import NavigationView from '../common/Navigation';
-
 export default {
     name: 'TournamentSettings',
     props: ['moniker'],
-    components: {
-        NavigationView
-    },
     data: function() {
         return {
             loading: {
@@ -92,13 +84,7 @@ export default {
             tournament: null,
 
             authenticated: false,
-            password: '',
-
-            nav_settings: {
-                links: [
-                    // TODO: links to graphs, score summaries, export stuff
-                ]
-            }
+            password: ''
         };
     },
     computed: {

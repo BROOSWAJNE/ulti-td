@@ -1,8 +1,5 @@
 <template>
 <div class="TournamentCreator">
-    <NavigationView
-        v-bind:settings="nav_settings">
-    </NavigationView>
     <div class="success-container" v-if="created">
         <span class="message">Success! Your tournament is live at:</span>
         <pre class="link">{{ tournament_url }}</pre>
@@ -73,13 +70,8 @@
 </template>
 
 <script>
-import NavigationView from './common/Navigation';
-
 export default {
     name: 'TournamentCreator',
-    components: {
-        NavigationView
-    },
     data: function() {
         return {
             saving: false,
@@ -93,11 +85,7 @@ export default {
             user_moniker: false, // whether user has defined the moniker
             extreme_comments: false,
             enforce_comments: false,
-            admin_pass: '',
-
-            nav_settings: {
-                links: []
-            }
+            admin_pass: ''
         };
     },
     computed: {

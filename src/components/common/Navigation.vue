@@ -1,8 +1,8 @@
 <template>
-<div class="NavigationView" v-bind:class="{ expanded : $store.state.nav_expanded }">
-    <button class="mobile-hamburger" v-on:click="$store.state.nav_expanded = !$store.state.nav_expanded">
-        <i class="fas fa-bars" v-bind:class="{ hidden: $store.state.nav_expanded }"></i>
-        <i class="fas fa-times" v-bind:class="{ hidden: !$store.state.nav_expanded }"></i>
+<div class="NavigationView" v-bind:class="{ expanded : expanded, hidden : hidden }">
+    <button class="mobile-hamburger" v-on:click="expanded = !expanded">
+        <i class="fas fa-bars" v-bind:class="{ hidden: expanded }"></i>
+        <i class="fas fa-times" v-bind:class="{ hidden: !expanded }"></i>
     </button>
     <div class="navigation-container">
         <div class="controls">
@@ -17,8 +17,8 @@
                 <span class="text">Home</span>
             </button>
         </div>
-        <div class="links" v-if="settings.links.length">
-            <router-link v-for="(link, idx) in settings.links" v-bind:key="idx"
+        <div class="links" v-if="links.length">
+            <router-link v-for="(link, idx) in links" v-bind:key="idx"
                 v-bind:to="link.to" v-bind:title="link.title"
                 tag="button" class="link" tabindex="-1">
                 <i class="fas fa-fw" v-bind:class="link.icon"></i>
@@ -30,13 +30,44 @@
 </template>
 
 <script>
-// TODO: instead of being a subcomponent, navigation should be global on the app
-// links (settings) then need to be passed in a different way. probably using store.
-// TODO: allows moving entire page up when expanding, and keeping expansion state without use of store
+// TODO: moving entire page up when expanding, and keeping expansion state without use of store
 
 export default {
     name: 'Navigation',
-    props: ['settings']
+    data: function() {
+        return {
+            expanded: false
+        };
+    },
+    computed: {
+        // TODO: this works, but ideally we'd want this defined within the components themselves
+        // especially so that we can pass params/querycomponents based on the current component
+        hidden: function() {
+            return this.$route.name === 'home';
+        },
+        links: function() {
+            switch(this.$route.name) {
+            case 'tournament':
+                return [
+                    {
+                        title: 'Admin Panel',
+                        icon: 'fa-tools',
+                        to: {
+                            name: 'tournament-settings',
+                            params: { moniker: this.$route.params.moniker }
+                        }
+                    },
+                    {
+                        title: 'Team Panel',
+                        icon: 'fa-users',
+                        to: { name: 'home' }
+                    }
+                ];
+            default:
+                return [];
+            }
+        }
+    }
 };
 </script>
 

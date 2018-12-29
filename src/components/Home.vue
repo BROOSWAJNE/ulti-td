@@ -7,7 +7,7 @@
             New Tournament
         </button>
         <div class="input" v-bind:class="{ expanded : expanded.new }">
-            <input type="text" class="input name has-submit" 
+            <input type="text" class="input name has-submit"
                 placeholder="Tournament Name"
                 v-bind:class="{ disabled: !expanded.new }"
                 v-model="inputs.new" ref="input_new"
@@ -70,6 +70,7 @@ export default {
             });
         },
         onFindTournament() {
+            // TODO: fetch tournaments by name and list instead
             if (!this.inputs.find) return;
             this.$router.push({
                 name: 'tournament',
@@ -94,7 +95,7 @@ export default {
     .title
         font-size: 10em
         font-weight: bold
-    
+
     .action
         margin-bottom: 10px
         display: grid

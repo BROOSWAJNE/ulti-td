@@ -1,8 +1,5 @@
 <template>
 <div class="TournamentSummary">
-    <NavigationView
-        v-bind:settings="nav_settings">
-    </NavigationView>
     <div class="loading-view" v-if="loading.tournament">Loading...</div>
     <div class="not-found" v-if="!loading.tournament && !tournament">Tournament not found</div>
     <div class="body" v-if="!loading.tournament && tournament">
@@ -28,14 +25,9 @@
 </template>
 
 <script>
-import NavigationView from '../common/Navigation';
-
 export default {
     name: 'TournamentSummary',
     props: ['moniker'],
-    components: {
-        NavigationView
-    },
     created: function() {
         this.$api.get('/tournament/moniker/' + this.moniker).then((res) => {
             this.tournament = res.data;
@@ -51,25 +43,7 @@ export default {
                 teams: true
             },
             tournament: null,
-            teams: null,
-
-            nav_settings: {
-                links: [
-                    {
-                        title: 'Admin Panel',
-                        icon: 'fa-tools',
-                        to: {
-                            name: 'tournament-settings',
-                            params: { moniker: this.moniker, pre_fetched: { tournament: this.tournament } }
-                        }
-                    },
-                    {
-                        title: 'Team Panel',
-                        icon: 'fa-users',
-                        to: { name: 'home' }
-                    }
-                ]
-            }
+            teams: null
         };
     },
     methods: {

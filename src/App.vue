@@ -1,12 +1,18 @@
 <template>
 <div id="App">
+    <NavigationView></NavigationView>
     <router-view />
 </div>
 </template>
 
 <script>
+import NavigationView from './components/common/Navigation';
+
 export default {
-    name: 'App'
+    name: 'App',
+    components: {
+        NavigationView
+    }
 };
 </script>
 

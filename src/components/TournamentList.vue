@@ -1,8 +1,5 @@
 <template>
 <div class="TournamentList">
-    <NavigationView
-        v-bind:settings="nav_settings">
-    </NavigationView>
     <div class="body">
         <div class="title">All Tournaments</div>
         <div class="list-container">
@@ -27,23 +24,16 @@
 
 <script>
 import moment from 'moment';
-import NavigationView from './common/Navigation';
 
 export default {
     name: 'TournamentList',
-    components: {
-        NavigationView
-    },
     created: function() {
         this.fetchTournaments();
     },
     data: function() {
         return {
             loading: false,
-            tournaments: null,
-            nav_settings: {
-                links: []
-            }
+            tournaments: null
         };
     },
     methods: {
