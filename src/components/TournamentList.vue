@@ -1,12 +1,8 @@
 <template>
 <div class="TournamentList">
-    <div class="controls">
-        <button class="text-button" tabindex="-1"
-            v-on:click="$router.go(-1)">
-            <i class="icon fas fa-angle-left"></i>
-            <span class="text">Back</span>
-        </button>
-    </div>
+    <NavigationView
+        v-bind:settings="nav_settings">
+    </NavigationView>
     <div class="body">
         <div class="title">All Tournaments</div>
         <div class="list-container">
@@ -31,16 +27,23 @@
 
 <script>
 import moment from 'moment';
+import NavigationView from './common/Navigation';
 
 export default {
     name: 'TournamentList',
+    components: {
+        NavigationView
+    },
     created: function() {
         this.fetchTournaments();
     },
     data: function() {
         return {
             loading: false,
-            tournaments: null
+            tournaments: null,
+            nav_settings: {
+                links: []
+            }
         };
     },
     methods: {
@@ -68,21 +71,6 @@ export default {
 
     height: 100%
     padding: 20px 0
-
-    .controls
-        position: absolute
-        top: 0
-        left: 0
-        padding: 20px
-        font-size: 1.5em
-
-        button
-            font-weight: bold
-            opacity: 0.5
-            .icon
-                margin-right: 3px
-            &:hover
-                opacity: 0.7
 
     .body
         margin: auto

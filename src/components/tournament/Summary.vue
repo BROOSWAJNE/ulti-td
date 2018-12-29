@@ -1,25 +1,10 @@
 <template>
 <div class="TournamentSummary">
-    <div class="controls">
-        <button class="text-button" tabindex="-1"
-            v-on:click="$router.go(-1)">
-            <i class="icon fas fa-angle-left"></i>
-            <span class="text">Back</span>
-        </button>
-    </div>
+    <NavigationView
+        v-bind:settings="nav_settings">
+    </NavigationView>
     <div class="loading-view" v-if="loading.tournament">Loading...</div>
     <div class="not-found" v-if="!loading.tournament && !tournament">Tournament not found</div>
-    <div class="links">
-        <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }"
-            tag="button" class="link" title="Admin Panel">
-            <i class="fas fa-fw fa-tools"></i>
-            <!-- <span class="label">Admin Panel</span> -->
-        </router-link>
-        <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker, pre_fetched: { tournament: tournament } } }"
-            tag="button" class="link" title="Team Panel">
-            <i class="fas fa-fw fa-users"></i>
-        </router-link>
-    </div>
     <div class="body" v-if="!loading.tournament && tournament">
         <span class="title">{{ tournament.name }}</span>
         <span class="description">{{ decodeURIComponent(tournament.settings.description) }}</span>
@@ -43,9 +28,14 @@
 </template>
 
 <script>
+import NavigationView from '../common/Navigation';
+
 export default {
     name: 'TournamentSummary',
     props: ['moniker'],
+    components: {
+        NavigationView
+    },
     created: function() {
         this.$api.get('/tournament/moniker/' + this.moniker).then((res) => {
             this.tournament = res.data;
@@ -61,7 +51,25 @@ export default {
                 teams: true
             },
             tournament: null,
-            teams: null
+            teams: null,
+
+            nav_settings: {
+                links: [
+                    {
+                        title: 'Admin Panel',
+                        icon: 'fa-tools',
+                        to: {
+                            name: 'tournament-settings',
+                            params: { moniker: this.moniker, pre_fetched: { tournament: this.tournament } }
+                        }
+                    },
+                    {
+                        title: 'Team Panel',
+                        icon: 'fa-users',
+                        to: { name: 'home' }
+                    }
+                ]
+            }
         };
     },
     methods: {
@@ -83,48 +91,9 @@ export default {
     height: 100%
     overflow: auto
 
-    .controls
-        position: absolute
-        top: 0
-        left: 0
-        padding: 20px
-        font-size: 1.5em
-
-        button
-            font-weight: bold
-            opacity: 0.5
-            .icon
-                margin-right: 3px
-            &:hover
-                opacity: 0.7
-
     .loading-view, .not-found
         margin: auto
         opacity: 0.5
-
-    .links
-        position: absolute
-        top: 0
-        left: 5px
-
-        height: 100vh
-        width: 10vw // space left over to right of body
-        // TODO use sass' equivalent of calc
-        display: flex
-        flex-flow: column
-        align-items: flex-start
-        justify-content: center
-        font-weight: bold
-
-        .link
-            padding: 10px
-            background-color: hsl(153, 16%, 45%)
-            border-radius: 3px
-            font-size: 1.5em
-            &:not(:last-of-type)
-                margin-bottom: 5px
-            &:hover
-                background-color: hsl(153, 16%, 35%)
 
     .body
         margin: auto

@@ -1,12 +1,8 @@
 <template>
 <div class="TournamentCreator">
-    <div class="controls">
-        <button class="text-button" tabindex="-1"
-            v-on:click="$router.go(-1)">
-            <i class="icon fas fa-angle-left"></i>
-            <span class="text">Back</span>
-        </button>
-    </div>
+    <NavigationView
+        v-bind:settings="nav_settings">
+    </NavigationView>
     <div class="success-container" v-if="created">
         <span class="message">Success! Your tournament is live at:</span>
         <pre class="link">{{ tournament_url }}</pre>
@@ -77,8 +73,13 @@
 </template>
 
 <script>
+import NavigationView from './common/Navigation';
+
 export default {
     name: 'TournamentCreator',
+    components: {
+        NavigationView
+    },
     data: function() {
         return {
             saving: false,
@@ -92,7 +93,11 @@ export default {
             user_moniker: false, // whether user has defined the moniker
             extreme_comments: false,
             enforce_comments: false,
-            admin_pass: ''
+            admin_pass: '',
+
+            nav_settings: {
+                links: []
+            }
         };
     },
     computed: {
@@ -157,21 +162,6 @@ export default {
     height: 100%
     width: 100%
     overflow-y: auto
-
-    .controls
-        position: absolute
-        top: 0
-        left: 0
-        padding: 20px
-        font-size: 1.5em
-
-        button
-            font-weight: bold
-            opacity: 0.5
-            .icon
-                margin-right: 3px
-            &:hover
-                opacity: 0.7
 
     .success-container
         margin: auto

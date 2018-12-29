@@ -1,12 +1,8 @@
 <template>
 <div class="TournamentSettings">
-    <div class="controls">
-        <button class="text-button" tabindex="-1"
-            v-on:click="$router.go(-1)">
-            <i class="icon fas fa-angle-left"></i>
-            <span class="text">Back</span>
-        </button>
-    </div>
+    <NavigationView
+        v-bind:settings="nav_settings">
+    </NavigationView>
     <div class="auth-container" v-if="!authenticated">
         <label for="password">Admin Password</label>
         <div class="input">
@@ -74,9 +70,14 @@
 </template>
 
 <script>
+import NavigationView from '../common/Navigation';
+
 export default {
     name: 'TournamentSettings',
     props: ['moniker'],
+    components: {
+        NavigationView
+    },
     data: function() {
         return {
             loading: {
@@ -91,7 +92,13 @@ export default {
             tournament: null,
 
             authenticated: false,
-            password: ''
+            password: '',
+
+            nav_settings: {
+                links: [
+                    // TODO: links to graphs, score summaries, export stuff
+                ]
+            }
         };
     },
     computed: {
@@ -153,21 +160,6 @@ export default {
 .TournamentSettings
     display: flex
     height: 100%
-
-    .controls
-        position: absolute
-        top: 0
-        left: 0
-        padding: 20px
-        font-size: 1.5em
-
-        button
-            font-weight: bold
-            opacity: 0.5
-            .icon
-                margin-right: 3px
-            &:hover
-                opacity: 0.7
 
     .auth-container
         margin: auto
