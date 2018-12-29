@@ -7,7 +7,7 @@
         <span class="message">Success! Your tournament is live at:</span>
         <pre class="link">{{ tournament_url }}</pre>
         <span class="message">
-            You can use your <router-link v-bind:to="{ name: 'tournament', params: { moniker: moniker }}">admin page</router-link> to add teams to the tournament.
+            You can use your <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker }}">admin page</router-link> to add teams to the tournament.
         </span>
     </div>
     <div class="creator-container" v-if="!created">
