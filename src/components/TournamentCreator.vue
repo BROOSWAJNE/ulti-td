@@ -186,7 +186,7 @@ export default {
 
         max-width: 60vw
         @media only screen and (max-width: 900px)
-            grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "btn btn"
+            grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "err err" "btn btn"
             max-width: 75vw
         @media only screen and (max-width: 700px)
             max-width: 90vw
