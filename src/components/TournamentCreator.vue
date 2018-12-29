@@ -104,7 +104,10 @@ export default {
     methods: {
         onKeyupName: function() {
             if (this.user_moniker) return;
-            this.moniker = this.name;
+            this.moniker = this.name
+                .trim()
+                .replace(/ /g, '-')
+                .substring(0, 15);
         },
         validate: function() {
             return this.name && this.moniker && this.admin_pass;
