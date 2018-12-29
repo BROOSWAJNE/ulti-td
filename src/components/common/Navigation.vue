@@ -11,6 +11,11 @@
                 <i class="icon fas fa-angle-left"></i>
                 <span class="text">Back</span>
             </button>
+            <button class="text-button home" tabindex="-1"
+                v-on:click="$router.push({ name: 'home' })">
+                <i class="icon fas fa-home"></i>
+                <span class="text">Home</span>
+            </button>
         </div>
         <div class="links" v-if="settings.links.length">
             <router-link v-for="(link, idx) in settings.links" v-bind:key="idx"
@@ -79,6 +84,9 @@ export default {
                 margin-right: 3px
             &:hover
                 opacity: 0.7
+
+            &.home
+                display: none
 
     .links
         height: 100%
@@ -154,6 +162,9 @@ export default {
                     // padding: 0 10px
                     &:hover
                         background-color: hsl(153, 16%, 40%)
+
+                    &.home
+                        display: initial
 
             .links
                 flex-flow: row
