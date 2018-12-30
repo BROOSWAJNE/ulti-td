@@ -17,7 +17,7 @@
         <span class="auth-error">{{ error.auth }}</span>
     </div>
     <div class="body" v-if="authenticated && tournament">
-        <span class="name">{{ tournament.name }}</span>
+        <span class="name">{{ tournament.name ? tournament.name : 'Unnamed Tournament' }}</span>
 
         <section class="tournament-settings">
             <span class="section-title">Tournament Info</span>
