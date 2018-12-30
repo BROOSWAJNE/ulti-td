@@ -30,8 +30,6 @@
 </template>
 
 <script>
-// TODO: moving entire page up when expanding, and keeping expansion state without use of store
-
 export default {
     name: 'Navigation',
     data: function() {
@@ -85,8 +83,6 @@ export default {
     height: 100%
     width: 100%
     z-index: 1
-
-    // TODO: change design of left navigation
 
     .mobile-hamburger
         display: none
