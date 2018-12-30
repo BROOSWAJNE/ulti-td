@@ -18,11 +18,11 @@ input, textarea
 
     &.has-submit
         padding-right: 30px
-    
+
     &.invalid
         border-bottom: 2px solid red
 
-    &.disabled
+    &:disabled
         pointer-events: none
         border-bottom: 2px solid lighten($button-color, 10%)
 
@@ -52,7 +52,7 @@ button
         padding: 20px 40px
         border-radius: 3px
         border: 2px solid $button-color
-    
+
     &.ghost-button
         background: var(--background-color)
         color: hsl(113, 64%, 20%)
@@ -60,7 +60,11 @@ button
 
         &:hover
             background: linear-gradient(to top, rgba(0, 0, 0, 0.025), rgba(0, 0, 0, 0.025)) var(--background-color)
-    
+        &:disabled
+            background: var(--background-color)
+            border: 2px solid lighten($button-color, 10%)
+            color: hsla(113, 64%, 20%, 50%)
+
     &.input-submit-button
         border-radius: 0 3px 3px 0
         height: 100%
@@ -74,9 +78,9 @@ button
         &:hover
             background-color: unset
             opacity: 1
-            
 
-    &.disabled
+
+    &:disabled
         pointer-events: none !important
         background: lighten($button-color, 10%)
         border: 2px solid lighten($button-color, 10%)
