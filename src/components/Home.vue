@@ -3,7 +3,7 @@
     <div class="title">Ulti.TD</div>
     <div class="action new">
         <button class="button action-button"
-            v-on:click="expanded.new = !expanded.new; expanded.new ? $refs.input_new.focus() : $refs.input_new.blur()">
+            v-on:click="expandInput('new')">
             New Tournament
         </button>
         <div class="input" v-bind:class="{ expanded : expanded.new }">
@@ -21,7 +21,7 @@
     </div>
     <div class="action find">
         <button class="button action-button ghost-button"
-            v-on:click="expanded.find = !expanded.find; expanded.find ? $refs.input_find.focus() : $refs.input_find.blur()">
+            v-on:click="expandInput('find')">
             Find Tournament
         </button>
         <div class="input" v-bind:class="{ expanded : expanded.find }">
@@ -76,6 +76,12 @@ export default {
                 name: 'tournament',
                 params: { moniker: this.inputs.find }
             });
+        },
+        expandInput(input) {
+            this.expanded[input] = !this.expanded[input];
+            setTimeout(() => {
+                this.expanded[input] ? this.$refs['input_'+input].focus() : this.$refs['input_'+input].blur();
+            }, 0);
         }
     }
 };
