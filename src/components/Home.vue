@@ -9,7 +9,7 @@
         <div class="input" v-bind:class="{ expanded : expanded.new }">
             <input type="text" class="input name has-submit"
                 placeholder="Tournament Name"
-                v-bind:class="{ disabled: !expanded.new }"
+                v-bind:disabled="!expanded.new"
                 v-model="inputs.new" ref="input_new"
                 v-on:keyup.enter="onCreateNewTournament">
             <button class="input-submit-button"
@@ -27,7 +27,7 @@
         <div class="input" v-bind:class="{ expanded : expanded.find }">
             <input type="text" class="input name has-submit"
                 placeholder="Tournament Name"
-                v-bind:class="{ disabled: !expanded.find }"
+                v-bind:disabled="!expanded.find"
                 v-model="inputs.find" ref="input_find"
                 v-on:keyup.enter="onFindTournament">
             <button class="input-submit-button"
