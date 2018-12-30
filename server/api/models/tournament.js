@@ -22,6 +22,17 @@ const TournamentSchema = new Schema({
         required: true,
         select: false
     },
+    invites: [{
+        name: {
+            type: String,
+            required: true,
+            unique: true
+        },
+        team: {
+            type: Schema.Types.ObjectId,
+            ref: 'Team'
+        }
+    }],
     settings: {
         type: Object,
         default: {}
