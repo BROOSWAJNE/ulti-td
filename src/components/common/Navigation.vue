@@ -6,14 +6,14 @@
     </button>
     <div class="navigation-container">
         <div class="controls">
-            <button class="text-button" tabindex="-1"
+            <button class="back" tabindex="-1"
                 v-on:click="$router.go(-1)">
-                <i class="icon fas fa-angle-left"></i>
+                <i class="icon fas fa-fw fa-angle-left"></i>
                 <span class="text">Back</span>
             </button>
-            <button class="text-button home" tabindex="-1"
+            <button class="home" tabindex="-1"
                 v-on:click="$router.push({ name: 'home' })">
-                <i class="icon fas fa-home"></i>
+                <i class="icon fas fa-fw fa-home"></i>
                 <span class="text">Home</span>
             </button>
         </div>
@@ -82,8 +82,6 @@ export default {
 
 <style lang="sass">
 .NavigationView
-    // padding-left: 5px
-
     height: 100%
     width: 100%
     z-index: 1
@@ -105,26 +103,28 @@ export default {
 
     .navigation-container
         height: 100%
-        width: 100%
 
     .controls
         position: absolute
         top: 0
         left: 0
-        // margin-top: 5px
-        padding: 20px
-        font-size: 1.5em
+        // font-size: 1.5em
 
         button
             font-weight: bold
-            opacity: 0.5
+            background-color: hsl(153, 16%, 45%)
+            box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25)
+            width: 75px
+            border-radius: 0 3px 3px 0
+            align-items: flex-start
+            &:first-of-type
+                border-radius: 0 0 3px 0
+            &:not(:last-of-type)
+                margin-bottom: 5px
             .icon
                 margin-right: 3px
             &:hover
-                opacity: 0.7
-
-            &.home
-                display: none
+                background-color: hsl(153, 16%, 40%)
 
     .links
         height: 100%
@@ -181,24 +181,17 @@ export default {
 
             .controls
                 position: relative
-                padding: 0
                 display: flex
                 justify-content: center
                 align-items: center
                 height: 100%
                 width: 100%
                 button
-                    color: var(--white)
                     height: 100%
                     width: 100%
-                    opacity: 1
                     border-radius: 0
-                    // padding: 0 10px
-                    &:hover
-                        background-color: hsl(153, 16%, 40%)
-
-                    &.home
-                        display: initial
+                    box-shadow: none
+                    margin-bottom: 0
 
             .links
                 flex-flow: row
