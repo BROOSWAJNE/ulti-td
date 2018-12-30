@@ -6,10 +6,11 @@
             <input type="password" class="input password has-submit" v-model="password"
                 v-on:keyup="error.auth = ''" ref="input_password"
                 v-on:keyup.enter="onAuthenticate"
-                v-bind:class="{ disabled: loading.authenticating }">
+                v-bind:disabled="loading.authenticating">
             <button class="input-submit-button"
                 v-on:click="onAuthenticate"
-                v-bind:class="{ hidden: !password, disabled: loading.authenticating }">
+                v-bind:class="{ hidden: !password }"
+                v-bind:disabled="loading.authenticating">
                 <i class="fas fa-caret-right"></i>
             </button>
         </div>
@@ -21,10 +22,10 @@
         <section class="tournament-settings">
             <span class="section-title">Tournament Info</span>
             <label for="name">Name</label>
-            <input type="text" v-model="tournament.name"
-                v-bind:class="{ disabled : loading.saving }">
+            <input type="text" v-model.trim="tournament.name"
+                v-bind:disabled="loading.saving">
             <label for="description">Description</label>
-            <textarea cols="30" rows="10" v-model="description" v-bind:class="{ disabled : loading.saving }"></textarea>
+            <textarea cols="30" rows="10" v-model="description" v-bind:disabled="loading.saving"></textarea>
         </section>
         <section class="spirit-settings">
             <span class="section-title">Spirit Settings</span>
@@ -54,13 +55,17 @@
         <section class="admin-settings">
             <span class="section-title">Admin Settings</span>
             <label for="password">Admin Password</label>
-            <input type="password" v-model="tournament.password" v-bind:class="{ disabled : loading.saving }">
+            <input type="password" v-model="tournament.password" v-bind:disabled="loading.saving">
         </section>
         <span class="error-message">{{ error.tournament }}</span>
         <button class="submit action-button"
-            v-bind:class="{ disabled : !validate() || loading.saving, saving: loading.saving }"
-            v-on:click="onClickSave">
-            Save
+            v-bind:class="{ saving: loading.saving }"
+            v-bind:disabled="!validate() || loading.saving"
+            v-on:click="onClickSave" v-if="!save_success">
+            {{ loading.saving ? 'Saving...' : 'Save' }}
+        </button>
+        <button class="submit success action-button ghost-button" v-if="save_success" disabled="disabled">
+            <i class="icon fas fa-check"></i><span class="text">Saved Successfully</span>
         </button>
     </div>
 </div>
@@ -80,6 +85,7 @@ export default {
                 auth:'',
                 tournament: ''
             },
+            save_success: false,
 
             tournament: null,
 
@@ -132,6 +138,11 @@ export default {
 
             this.$api.patch('/tournament/' + this.tournament._id, this.tournament).then((res) => {
                 this.tournament = res.data;
+                this.save_success = true;
+                let watcher = this.$watch(() => JSON.stringify(this.tournament), () => {
+                    this.save_success = false;
+                    watcher(); // stop watching
+                });
             }).catch((err) => {
                 this.error.tournament = 'An unknown error occured';
             }).finally(() => {
@@ -184,7 +195,7 @@ export default {
     .body
         display: grid
         grid-template-columns: 50% 50%
-        grid-template-areas: "title title" "info admin" "spirit admin" "err err" "btn btn"
+        grid-template-areas: "title title" "info info" "teams teams" "spirit admin" "err err" "btn btn"
         grid-gap: 10px
 
         margin: auto
@@ -192,7 +203,7 @@ export default {
 
         width: 100%
         @media only screen and (max-width: 900px)
-            grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "err err" "btn btn"
+            grid-template-areas: "title title" "info info" "teams teams" "spirit spirit" "admin admin" "err err" "btn btn"
 
         .name
             grid-area: title
@@ -249,6 +260,9 @@ export default {
 
         .submit
             grid-area: btn
+            &.success
+                .icon
+                    margin-right: 5px
 
         label
             margin-bottom: 5px
