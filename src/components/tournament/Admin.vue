@@ -200,7 +200,7 @@ export default {
 
         .name
             grid-area: title
-            font-size: 5em
+            font-size: calc(2em + 5vmin)
             font-weight: bold
 
             text-align: center
@@ -212,9 +212,6 @@ export default {
             border-bottom: 2px solid hsl(153, 16%, 78%)
             margin-bottom: 10px
             padding-bottom: 10px
-
-            @media only screen and (max-width: 900px)
-                font-size: 3em
 
         .error-message
             grid-area: err

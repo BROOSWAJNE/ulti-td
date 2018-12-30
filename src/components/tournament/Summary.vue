@@ -88,7 +88,7 @@ export default {
 
     .title
         grid-area: title
-        font-size: 5em
+        font-size: calc(2em + 5vmin)
         font-weight: bold
 
         text-align: center
@@ -103,9 +103,6 @@ export default {
         max-width: 100%
         margin: 0 auto 50px auto
         padding-bottom: 10px
-
-        @media only screen and (max-width: 900px)
-            font-size: 3em
 
     .description
         grid-area: desc
