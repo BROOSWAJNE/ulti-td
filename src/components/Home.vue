@@ -90,7 +90,7 @@ export default {
     flex-flow: column
 
     height: 100%
-    width: 100%s
+    width: 100%
 
     .title
         font-size: 10em
