@@ -151,7 +151,6 @@ export default {
 
     height: 100%
     width: 100%
-    overflow-y: auto
 
     .success-container
         margin: auto
@@ -168,18 +167,14 @@ export default {
         display: grid
         grid-template-columns: 50% 50%
         // grid-template-rows: repeat(4, auto)
-        grid-template-areas: "title title" "info admin" "spirit admin" "err err" "btn btn"
+        grid-template-areas: "title title" "info admin" "info spirit" "err err" "btn btn"
         grid-gap: 10px
 
         margin: auto
         padding: 20px 0
 
-        max-width: 60vw
         @media only screen and (max-width: 900px)
             grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "err err" "btn btn"
-            max-width: 75vw
-        @media only screen and (max-width: 700px)
-            max-width: 90vw
 
         .title
             grid-area: title
