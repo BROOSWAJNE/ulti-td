@@ -67,6 +67,14 @@ export default {
                 return [];
             }
         }
+    },
+    watch: {
+        '$route': function(route) {
+            if (route.name === 'home') {
+                this.expanded = false;
+                this.$emit('toggleExpand', this.expanded);
+            }
+        }
     }
 };
 </script>
