@@ -68,7 +68,7 @@ body
         .NavigationView
             position: relative
         .app-body
-            padding: 0 20px
+            padding: 0 20px 40px 20px
             overflow: auto
         &.nav-expanded
             .NavigationView
