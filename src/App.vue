@@ -49,28 +49,28 @@ body
 
     display: grid
     grid-template-columns: 10vw 90vw
-    grid-template-rows: auto 40px
-    grid-template-areas: "nav body body" ". . ."
+    grid-template-areas: "nav body"
     .NavigationView
         grid-area: nav
+        transition: margin-bottom 0.25s
     .app-body
         grid-area: body
-        height: 100vh
         padding-right: 10vw
         overflow: auto
         margin-top: 0
-        transition: margin-top 0.25s
 
     @media only screen and (max-width: 900px)
         display: grid
         grid-template-columns: 100%
+        grid-template-rows: 1fr auto
         grid-template-areas: "body" "nav"
         .NavigationView
             position: relative
+            margin-bottom: -40px
         .app-body
             padding: 0 20px
             overflow: auto
         &.nav-expanded
-            .app-body
-                margin-top: -40px
+            .NavigationView
+                margin-bottom: 0
 </style>
