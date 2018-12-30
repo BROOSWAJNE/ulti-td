@@ -84,10 +84,12 @@ export default {
     width: 100%
     z-index: 1
 
+    $button-color: hsl(153, 16%, 65%)
+
     .mobile-hamburger
         display: none
         padding: 10px
-        background-color: hsl(153, 16%, 45%)
+        background-color: $button-color
         border-radius: 3px 0 0 0
         font-size: 1.5em
 
@@ -95,7 +97,7 @@ export default {
         width: 40px
 
         &:hover
-            background-color: hsl(153, 16%, 35%)
+            background-color: darken($button-color, 5%)
 
     .navigation-container
         height: 100%
@@ -108,7 +110,7 @@ export default {
 
         button
             font-weight: bold
-            background-color: hsl(153, 16%, 45%)
+            background-color: $button-color
             box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25)
             width: 75px
             border-radius: 0 3px 3px 0
@@ -120,7 +122,7 @@ export default {
             .icon
                 margin-right: 3px
             &:hover
-                background-color: hsl(153, 16%, 40%)
+                background-color: darken($button-color, 5%)
 
     .links
         height: 100%
@@ -132,7 +134,7 @@ export default {
 
         .link
             padding: 10px
-            background-color: hsl(153, 16%, 45%)
+            background-color: $button-color
             border-radius: 0 3px 3px 0
             font-size: 1.5em
             box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.25)
@@ -144,7 +146,7 @@ export default {
                 margin-bottom: 5px
                 // border-bottom: 5px solid hsl(153, 16%, 55%)
             &:hover
-                background-color: hsl(153, 16%, 35%)
+                background-color: darken($button-color, 5%)
 
     @media only screen and (max-width: 900px)
         width: 100%
@@ -154,7 +156,7 @@ export default {
         &.expanded
             // margin-bottom: 0
             .mobile-hamburger
-                background-color: hsl(153, 16%, 35%)
+                background-color: darken($button-color, 5%)
                 top: 0
                 border-radius: 0
                 box-shadow: none
@@ -173,7 +175,7 @@ export default {
             box-sizing: border-box
             display: flex
             justify-content: space-around
-            background: hsl(153, 16%, 45%)
+            background: $button-color
 
             .controls
                 position: relative
@@ -200,5 +202,5 @@ export default {
                     box-shadow: none
                     margin-bottom: 0
                     &:hover
-                        background-color: hsl(153, 16%, 40%)
+                        background-color: darken($button-color, 5%)
 </style>
