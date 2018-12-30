@@ -183,7 +183,7 @@ export default {
                     color: var(--white)
                     height: 100%
                     width: 100%
-                    opacity: 0.8
+                    opacity: 1
                     border-radius: 0
                     // padding: 0 10px
                     &:hover
