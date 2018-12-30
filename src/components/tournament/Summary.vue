@@ -63,7 +63,6 @@ export default {
 .TournamentSummary
     display: flex
     height: 100%
-    overflow: auto
 
     .loading-view, .not-found
         margin: auto
@@ -78,11 +77,10 @@ export default {
         grid-template-columns: 50% 50%
         grid-template-rows: auto auto minmax(200px, 1fr) minmax(200px, 1fr)
 
-        width: 80vw
+        width: 100%
         @media only screen and (max-width: 900px)
             grid-template-areas: "title title" "desc desc" "teams teams" "results results" "spirit spirit"
             grid-template-rows: auto auto repeat(3, minmax(200px, 1fr))
-            width: 95vw
 
         position: relative
 

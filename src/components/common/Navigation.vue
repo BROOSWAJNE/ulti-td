@@ -1,6 +1,6 @@
 <template>
 <div class="NavigationView" v-bind:class="{ expanded : expanded, hidden : hidden }">
-    <button class="mobile-hamburger" v-on:click="expanded = !expanded">
+    <button class="mobile-hamburger" v-on:click="expanded = !expanded; $emit('toggleExpand', expanded)">
         <i class="fas fa-bars" v-bind:class="{ hidden: expanded }"></i>
         <i class="fas fa-times" v-bind:class="{ hidden: !expanded }"></i>
     </button>
@@ -74,14 +74,13 @@ export default {
 
 <style lang="sass">
 .NavigationView
-    position: absolute
-    top: 0
-    left: 0
     // padding-left: 5px
 
-    height: 100vh
-    width: 10vw
+    height: 100%
+    width: 100%
     z-index: 1
+
+    // TODO: change design of left navigation
 
     .mobile-hamburger
         display: none
@@ -144,20 +143,16 @@ export default {
                 background-color: hsl(153, 16%, 35%)
 
     @media only screen and (max-width: 900px)
-        position: absolute
-        top: unset
-        bottom: 0
         width: 100%
 
         box-shadow: -1px -1px 5px rgba(0, 0, 0, 0.25)
         height: 40px
-        margin-bottom: -40px
-        transition: margin-bottom 0.25s
         &.expanded
-            margin-bottom: 0
+            // margin-bottom: 0
             .mobile-hamburger
                 background-color: hsl(153, 16%, 35%)
                 top: 0
+                border-radius: 0
                 box-shadow: none
 
         .mobile-hamburger

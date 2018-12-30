@@ -190,13 +190,9 @@ export default {
         margin: auto
         padding: 20px 0
 
-        min-width: 70vw
-        max-width: 80vw
+        width: 100%
         @media only screen and (max-width: 900px)
-            grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "btn btn"
-            max-width: 85vw
-        @media only screen and (max-width: 700px)
-            max-width: 90vw
+            grid-template-areas: "title title" "info info" "spirit spirit" "admin admin" "err err" "btn btn"
 
         .name
             grid-area: title
