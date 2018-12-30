@@ -30,7 +30,7 @@ module.exports = {
     custom_routes: {
         'get': {
             '/tournament/:id': function(req, res, next) {
-                logger.log(req.method, req.originalUrl, '\ntournament:', req.params.id);
+                logger.log(req.method, req.originalUrl);
 
                 TeamModel.find({
                     tournaments: req.params.id

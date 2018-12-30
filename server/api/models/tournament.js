@@ -35,7 +35,7 @@ module.exports = {
     custom_routes: {
         'get': {
             '/moniker/:moniker': function(req, res, next) {
-                logger.log(req.method, req.originalUrl, '\nmoniker:', encodeURIComponent(req.params.moniker));
+                logger.log(req.method, req.originalUrl);
 
                 TournamentModel.findOne({
                     moniker: encodeURIComponent(req.params.moniker)
