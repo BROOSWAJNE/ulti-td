@@ -53,6 +53,7 @@ body
     .NavigationView
         grid-area: nav
         transition: margin-bottom 0.25s
+        margin-bottom: -40px
     .app-body
         grid-area: body
         padding-right: 10vw
@@ -66,7 +67,6 @@ body
         grid-template-areas: "body" "nav"
         .NavigationView
             position: relative
-            margin-bottom: -40px
         .app-body
             padding: 0 20px
             overflow: auto
