@@ -102,5 +102,21 @@ button
         .fa-square
             display: none
 
+.toggle-switch
+    display: inline-flex
+    cursor: pointer
+    color: $button-color
+    &:hover
+        color: darken($button-color, 2.5%)
+
+    .fas
+        font-size: 1.2em
+    &:not(.checked)
+        .fa-toggle-on
+            display: none
+    &.checked
+        .fa-toggle-off
+            display: none
+
 .hidden
     display: none
