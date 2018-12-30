@@ -12,9 +12,9 @@
         <section class="tournament-settings">
             <span class="section-title">Tournament Info</span>
             <label for="name">Name</label>
-            <input type="text" v-model="name"
+            <input type="text" v-model.trim="name"
                 v-on:keyup="onKeyupName"
-                v-bind:class="{ disabled : saving }">
+                v-bind:disabled="saving">
             <label for="moniker"
                 title="The unique identifier used to create the link to your tournament">
                 Identifier <span class="example-url">
@@ -23,9 +23,10 @@
             </label>
             <input type="text" class="input moniker" v-model="moniker"
                 v-on:keyup="user_moniker = true; moniker_exists = false" tabindex="-1"
-                v-bind:class="{ auto : !user_moniker, invalid : moniker_exists, disabled: saving }">
+                v-bind:class="{ auto : !user_moniker, invalid : moniker_exists }"
+                v-bind:disabled="saving">
             <label for="description">Description</label>
-            <textarea cols="30" rows="10" v-model="description" v-bind:class="{ disabled : saving }"></textarea>
+            <textarea cols="30" rows="10" v-model="description" v-bind:disabled="saving"></textarea>
         </section>
         <section class="spirit-settings">
             <span class="section-title">Spirit Settings</span>
@@ -59,11 +60,12 @@
                 tournament settings, view teams entered, review spirit scores, and more.
             </span>
             <label for="password">Admin Password</label>
-            <input type="password" v-model="admin_pass" v-bind:class="{ disabled : saving }">
+            <input type="password" v-model="admin_pass" v-bind:disabled="saving">
         </section>
         <span class="error-message">{{ error }}</span>
         <button class="submit action-button"
-            v-bind:class="{ disabled : !validate() || saving, saving: saving }"
+            v-bind:class="{ saving: saving }"
+            v-bind:disabled="!validate() || saving"
             v-on:click="onClickCreate">Create</button>
     </div>
 </div>
