@@ -30,22 +30,22 @@
         <section class="spirit-settings">
             <span class="section-title">Spirit Settings</span>
             <div class="setting spirit-extreme"
-                v-on:click="tournament.settings.spirit.extreme_comments = !tournament.settings.spirit.extreme_comments"
-                v-bind:class="{ disabled : tournament.settings.spirit.enforce_comments || loading.saving }"
+                v-on:click="tournament.settings.spirit.comments.extreme = !tournament.settings.spirit.comments.extreme"
+                v-bind:class="{ disabled : tournament.settings.spirit.comments.enforce || loading.saving }"
                 title="Forces teams to leave comments when giving spirit scores of 0 or 4 in any category">
-                <div class="checkbox" v-bind:class="{ checked : tournament.settings.spirit.enforce_comments || tournament.settings.spirit.extreme_comments }"
-                    tabindex="0" v-on:keyup.space="tournament.settings.spirit.extreme_comments = !tournament.settings.spirit.extreme_comments">
+                <div class="checkbox" v-bind:class="{ checked : tournament.settings.spirit.comments.enforce || tournament.settings.spirit.comments.extreme }"
+                    tabindex="0" v-on:keyup.space="tournament.settings.spirit.comments.extreme = !tournament.settings.spirit.comments.extreme">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Enforce comments for exceptional scores</span>
             </div>
             <div class="setting spirit-enforce"
-                v-on:click="tournament.settings.spirit.enforce_comments = !tournament.settings.spirit.enforce_comments"
+                v-on:click="tournament.settings.spirit.comments.enforce = !tournament.settings.spirit.comments.enforce"
                 v-bind:class="{ disabled : loading.saving }"
                 title="Forces teams to leave comments when giving spirit scores lower/higher than 2 in any category">
-                <div class="checkbox" v-bind:class="{ checked : tournament.settings.spirit.enforce_comments }"
-                    tabindex="0" v-on:keyup.space="tournament.settings.spirit.enforce_comments = !tournament.settings.spirit.enforce_comments">
+                <div class="checkbox" v-bind:class="{ checked : tournament.settings.spirit.comments.enforce }"
+                    tabindex="0" v-on:keyup.space="tournament.settings.spirit.comments.enforce = !tournament.settings.spirit.comments.enforce">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
@@ -131,8 +131,8 @@ export default {
         onClickSave: function() {
             if (!this.validate()) return;
 
-            if (this.tournament.settings.spirit.enforce_comments)
-                this.tournament.settings.spirit.extreme_comments = this.tournament.settings.spirit.enforce_comments;
+            if (this.tournament.settings.spirit.comments.enforce)
+                this.tournament.settings.spirit.comments.extreme = this.tournament.settings.spirit.comments.enforce;
 
             this.loading.saving = true;
 
