@@ -10,7 +10,7 @@
     "build": "parcel build src/index.html",
     "start": "node server/server.js",
     "lint": "eslint . --ext .js,.vue",
-    "postinstall": "npm run lint && npm run build"
+    "postinstall": "npm run lint"
   },
   "author": "Willem Garnier",
   "license": "ISC",
@@ -38,5 +38,6 @@
   },
   "alias": {
     "vue": "./node_modules/vue/dist/vue.common.js"
-  }
+  },
+  "heroku-run-build-script": true
 }
