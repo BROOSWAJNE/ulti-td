@@ -119,5 +119,16 @@ button
         .fa-toggle-off
             display: none
 
+.fa-combiner
+    position: relative
+    --shadow-color: var(--background-color)
+    .subscript
+        position: absolute
+        font-size: 0.6em
+        z-index: 1
+        bottom: -2px
+        right: -2px
+        text-shadow: 1px 1px 1px var(--shadow-color), -1px 1px 1px var(--shadow-color), -1px -1px 1px var(--shadow-color), 1px -1px 1px var(--shadow-color)
+
 .hidden
     display: none
