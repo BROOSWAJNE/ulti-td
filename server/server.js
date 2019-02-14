@@ -3,13 +3,20 @@ logger.log('Starting server');
 
 const path = require('path');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const express = require('express');
 const https = require('https');
 const helmet = require('helmet');
+const session = require('express-session');
+const csrf = require('csurf');
 
 const app = express();
 app.use(helmet());
+
+const secret = crypto.randomBytes(64).toString('hex');
+app.use(session({ secret: secret, resave: false, saveUninitialized: false }));
+app.use(csrf());
 
 // api routing
 const routers = {
