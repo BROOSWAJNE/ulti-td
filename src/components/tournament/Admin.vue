@@ -4,7 +4,7 @@
         <label for="password">Admin Password</label>
         <div class="input">
             <input type="password" class="input password has-submit" v-model="password"
-                v-on:keyup="error.auth = ''" ref="input_password"
+                v-on:keyup.exact="error.auth = ''" ref="input_password"
                 v-on:keyup.enter="onAuthenticate"
                 v-bind:disabled="loading.authenticating">
             <button class="input-submit-button"
@@ -57,6 +57,47 @@
             <label for="password">Admin Password</label>
             <input type="password" v-model="tournament.password" v-bind:disabled="loading.saving">
         </section>
+        <section class="team-settings">
+            <span class="section-title">Team Settings</span>
+        </section>
+        <section class="team-invites">
+            <span class="section-title">Team Invites <span class="count">({{ tournament.invites.length }})</span></span>
+            <span class="section-description">
+                Inviting a team will provide you a unique link which you can send to the team's captain to allow them
+                to register for your tournament, so that they can access score/spirit submissions and other features.
+            </span>
+            <div class="invite-list">
+                <div class="invite" v-for="invite in tournament.invites" v-bind:key="invite.name">
+                    <span class="invite-name" :title="invite.name">{{ invite.name }}</span>
+                    <span class="invite-status">{{ invite.team ? 'Accepted' : 'Pending' }}</span>
+                    <button class="invite-link invite-link-copy" title="Copy invite link">
+                        <div class="fa-combiner">
+                            <i class="fas fa-fw fa-link"></i>
+                            <i class="subscript far fa-fw fa-copy"></i>
+                        </div>
+                    </button>
+                    <button class="invite-link invite-link-view" :title="(invite_links_expanded[invite.name] ? 'Hide' : 'View') + ' invite link'"
+                        v-on:click="$set(invite_links_expanded, invite.name, !invite_links_expanded[invite.name])"
+                        v-bind:class="{ expanded: invite_links_expanded[invite.name] }">
+                        <div class="fa-combiner">
+                            <i class="fas fa-fw fa-link"></i>
+                            <i class="subscript far fa-fw fa-eye"></i>
+                            <i class="subscript far fa-fw fa-eye-slash"></i>
+                        </div>
+                    </button>
+                    <pre class="invite-link" v-bind:class="{ expanded : invite_links_expanded[invite.name] }">blah</pre>
+                    <button class="delete" title="Remove team invite" v-on:click="onRemoveInvite(invite)">
+                        <i class="fas fa-fw fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="new-invite input">
+                <input type="text" placeholder="Team Name" class="team-name has-submit"
+                    v-model="new_invite.name" v-on:keyup.enter.stop="onAddInvite" :class="{ invalid: new_invite.invalid }"
+                    @keyup.="$set(new_invite, 'invalid', false)">
+                <button class="input-submit-button" v-on:click="onAddInvite"><i class="fas fa-plus"></i></button>
+            </div>
+        </section>
         <span class="error-message">{{ error.tournament }}</span>
         <button class="submit action-button"
             v-bind:class="{ saving: loading.saving }"
@@ -72,6 +113,8 @@
 </template>
 
 <script>
+const _ = require('lodash');
+
 export default {
     name: 'TournamentSettings',
     props: ['moniker'],
@@ -88,6 +131,10 @@ export default {
             save_success: false,
 
             tournament: null,
+            new_invite: {
+                name: ''
+            },
+            invite_links_expanded: {},
 
             authenticated: false,
             password: ''
@@ -148,6 +195,20 @@ export default {
             }).finally(() => {
                 this.loading.saving = false;
             });
+        },
+        onAddInvite: function() {
+            let existing = _.find(this.tournament.invites, invite => invite.name === this.new_invite.name);
+            if (existing) {
+                this.$set(this.new_invite, 'invalid', true);
+            } else {
+                this.tournament.invites.push({
+                    name: this.new_invite.name
+                });
+                this.new_invite.name = '';
+            }
+        },
+        onRemoveInvite: function(invite) {
+            this.tournament.invites.splice(this.tournament.invites.indexOf(invite), 1);
         }
     }
 };
@@ -195,7 +256,7 @@ export default {
     .body
         display: grid
         grid-template-columns: 50% 50%
-        grid-template-areas: "title title" "info info" "teams teams" "spirit admin" "err err" "btn btn"
+        grid-template-areas: "title title" "info info" "teams invites" "spirit invites" "admin invites" "err err" "btn btn"
         grid-gap: 10px
 
         margin: auto
@@ -203,7 +264,7 @@ export default {
 
         width: 100%
         @media only screen and (max-width: 900px)
-            grid-template-areas: "title title" "info info" "teams teams" "spirit spirit" "admin admin" "err err" "btn btn"
+            grid-template-areas: "title title" "info info" "teams teams" "invites invites" "spirit spirit" "admin admin" "err err" "btn btn"
 
         .name
             grid-area: title
@@ -234,6 +295,8 @@ export default {
         .section-title
             font-weight: bold
             margin-bottom: 10px
+            .count
+                font-weight: normal
         .section-description
             opacity: 0.7
             margin-bottom: 10px
@@ -251,12 +314,88 @@ export default {
             .setting
                 cursor: pointer
                 margin-bottom: 5px
+                margin-right: auto
                 &.disabled
                     pointer-events: none
                     opacity: 0.5
 
         .admin-settings
             grid-area: admin
+
+        .team-settings
+            grid-area: teams
+
+        .team-invites
+            grid-area: invites
+            display: grid
+            grid-template-rows: auto auto minmax(auto, 1fr) auto
+            max-height: 300px
+            .invite-list
+                overflow: auto
+                margin-bottom: 10px
+                border-radius: 3px
+            .invite
+                display: grid
+                grid-template-columns: 1fr 50px auto auto auto auto
+                grid-template-rows: 25px
+
+                &:not(:last-of-type)
+                    margin-bottom: 5px
+                overflow: hidden
+
+                background: hsla(150, 16%, 85%, 1)
+                border-radius: 3px
+                font-size: 10px
+
+                >*
+                    display: flex
+                    align-items: center
+                    padding: 0 6px
+                .invite-name, pre.invite-link
+                    overflow: hidden
+                    white-space: nowrap
+                    padding: 0 0 0 6px
+                    margin-right: 6px
+                .invite-status
+                    font-family: monospace
+                    background: hsla(150, 16%, 80%, 1)
+                button
+                    color: var(--text-color)
+                    border-radius: 0
+                    background: hsla(150, 16%, 80%, 1)
+                    .fa-combiner
+                        --shadow-color: hsla(150, 16%, 80%, 1)
+                    &:hover
+                        background: hsla(150, 16%, 75%, 1)
+                        .fa-combiner
+                            --shadow-color: hsla(150, 16%, 75%, 1)
+                    &.invite-link
+                        .fa-combiner .subscript.fa-eye-slash
+                            display: none
+                        &.expanded .fa-combiner .subscript
+                            &.fa-eye
+                                display: none
+                            &.fa-eye-slash
+                                display: inline-block
+                pre.invite-link
+                    user-select: all
+                    margin: 0
+                    width: 200px
+                    box-sizing: border-box
+                    transition: margin-right 0.5s
+                    margin-right: -200px
+                    &.expanded
+                        margin-right: 0
+            .new-invite
+                position: relative
+                height: 30px
+                .team-name
+                    height: 30px
+                    width: 100%
+                .input-submit-button
+                    position: absolute
+                    top: 0
+                    right: 0
 
         .submit
             grid-area: btn
