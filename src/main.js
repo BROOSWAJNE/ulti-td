@@ -1,3 +1,5 @@
+/* global INJECTED_DATA */
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import axios from 'axios';
@@ -13,6 +15,7 @@ Vue.prototype.$api = axios.create({
     headers: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
+        'csrf-token': INJECTED_DATA.csrfToken,
     },
 });
 Vue.use(Vuex);

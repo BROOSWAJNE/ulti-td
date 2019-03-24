@@ -10,6 +10,8 @@ const helmet = require('helmet');
 const session = require('express-session');
 const csrf = require('csurf');
 
+const { inject } = require('./lib/utils');
+
 const app = express();
 app.use(helmet());
 
@@ -26,8 +28,15 @@ fs.readdirSync(path.resolve(__dirname, '../dist')).forEach((file) => {
         res.sendFile(path.join(__dirname, '../dist/'+file));
     });
 });
-app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
+app.get('/', function(req, res, next) {
+    inject(path.join(__dirname, '../dist/index.html'), {
+        csrfToken: req.csrfToken(),
+    })
+        .then((index) => res.send(index))
+        .catch((err) => {
+            logger.error('Error injecting index.html', err);
+            next(err);
+        });
 });
 // redirect to index instead of 404
 app.get('*', function(req, res) {
