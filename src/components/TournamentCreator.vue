@@ -141,6 +141,13 @@
 </template>
 
 <script>
+function constructMoniker(name) {
+    return name
+        .trim()
+        .replace(/ /g, '-')
+        .substring(0, 15);
+}
+
 export default {
     name: 'TournamentCreator',
     data: function() {
@@ -152,7 +159,7 @@ export default {
 
             // tournament data
             name: this.$route.query.name || '',
-            moniker: this.$route.query.name || '',
+            moniker: constructMoniker(this.$route.query.name) || '',
             description: `Welcome to ${this.$route.query.name}!`,
             user_moniker: false, // whether user has defined the moniker
 
@@ -183,10 +190,7 @@ export default {
     methods: {
         onKeyupName: function() {
             if (this.user_moniker) return;
-            this.moniker = this.name
-                .trim()
-                .replace(/ /g, '-')
-                .substring(0, 15);
+            this.moniker = constructMoniker(this.name);
         },
         getTournamentData: function() {
             return {
