@@ -24,26 +24,24 @@ logger.wrap(app);
 // api routing
 app.use('/api', require('./api/router'));
 
-// if file exists in dist, serve it
-fs.readdirSync(path.resolve(__dirname, '../dist')).forEach((file) => {
-    app.get('/'+file, function(req, res) {
-        res.sendFile(path.join(__dirname, '../dist/'+file));
-    });
-});
-app.get('/', function(req, res, next) {
-    inject(path.join(__dirname, '../dist/index.html'), {
+function routeIndex(req, res, next) {
+    const injectData = {
         csrfToken: req.csrfToken(),
-    })
+    };
+    inject(path.join(__dirname, '../dist/index.html'), injectData)
         .then((index) => res.send(index))
         .catch((err) => {
             logger.error('Error injecting index.html', err);
             next(err);
         });
+}
+// if file exists in dist, serve it
+fs.readdirSync(path.resolve(__dirname, '../dist')).forEach((file) => {
+    app.get('/'+file, file === 'index.html' ? routeIndex : function(req, res) {
+        res.sendFile(path.join(__dirname, '../dist/'+file));
+    });
 });
-// redirect to index instead of 404
-app.get('*', function(req, res) {
-    res.redirect('/');
-});
+app.get('*', routeIndex);
 
 const port = process.env.PORT || 4000;
 if (process.env.NODE_ENV === 'production') { // TODO: enable https for prod
