@@ -28,33 +28,25 @@ const COLOR = {
 };
 
 function output(args, color) {
-    let argArr = Array.prototype.slice.call(args);
-
-    let timestamp = '\x1b[90m[' + new moment().format('YYYY-MM-DD@HH:mm:ss:SSS') + ']\x1b[0m';
-
-    // eslint-disable-next-line
-    console.log.apply(this, [timestamp + COLOR[color]].concat(argArr).concat(['\x1b[0m']));
+    const timestamp = `\x1b[90m[${new moment().format('YYYY-MM-DD@HH:mm:ss:SSS')}]\x1b[0m`;
+    process.stdout.write([
+        timestamp,
+        COLOR[color],
+        ...args,
+        COLOR.Reset,
+        '\n',
+    ].join(''));
 }
 
 module.exports = {
     // general purpose
-    info: function() {
-        output(arguments);
-    },
+    info: (...args) => output(args),
     // for unimportant logging
-    log: function() {
-        output(arguments, 'Dim');
-    },
+    log: (...args) => output(args, 'Dim'),
     // for debugging
-    debug: function() {
-        output(arguments, 'Bright');
-    },
+    debug: (...args) => output(args, 'Bright'),
     // for errors
-    error: function() {
-        output(arguments, 'FgRed');
-    },
+    error: (...args) => output(args, 'FgRed'),
     // for warnings
-    warn: function() {
-        output(arguments, 'FgYellow');
-    },
+    warn: (...args) => output(args, 'FgYellow'),
 };
