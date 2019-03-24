@@ -19,6 +19,8 @@ const secret = process.env.CSRF_SECRET;
 app.use(session({ secret: secret, resave: false, saveUninitialized: false }));
 app.use(csrf());
 
+logger.wrap(app);
+
 // api routing
 app.use('/api', require('./api/router'));
 
