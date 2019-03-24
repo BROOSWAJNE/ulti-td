@@ -1,6 +1,6 @@
 <template>
-<div id="App" v-bind:class="{ 'nav-expanded': nav_expanded }">
-    <NavigationView @toggleExpand="(expanded) => nav_expanded = expanded"></NavigationView>
+<div id="App" v-bind:class="{ 'nav-expanded': navExpanded }">
+    <NavigationView @toggleExpand="(expanded) => navExpanded = expanded"></NavigationView>
     <div class="app-body">
         <router-view></router-view>
     </div>
@@ -16,7 +16,7 @@ export default {
         NavigationView,
     },
     data: function() {
-        return { nav_expanded: false };
+        return { navExpanded: false };
     },
 };
 </script>

@@ -249,10 +249,6 @@ export default {
             color: red
             margin-top: 5px
 
-    // copied from tournament creator
-    // TODO: either commonize these two, or make the admin panel different
-    // probably latter, include graphs and additional options
-
     .body
         display: grid
         grid-template-columns: 50% 50%

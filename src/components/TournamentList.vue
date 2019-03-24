@@ -42,7 +42,6 @@ export default {
             this.$api.get('/tournament').then((res) => {
                 this.tournaments = res.data;
             }).catch((err) => {
-                console.error(err);
                 this.tournaments = false;
             }).finally(() => {
                 this.loading = false;
