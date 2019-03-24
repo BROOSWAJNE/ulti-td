@@ -3,7 +3,6 @@ logger.log('Starting server');
 
 const path = require('path');
 const fs = require('fs');
-const crypto = require('crypto');
 
 const express = require('express');
 const https = require('https');
@@ -14,38 +13,25 @@ const csrf = require('csurf');
 const app = express();
 app.use(helmet());
 
-const secret = crypto.randomBytes(64).toString('hex');
+const secret = process.env.CSRF_SECRET;
 app.use(session({ secret: secret, resave: false, saveUninitialized: false }));
 app.use(csrf());
 
 // api routing
-const routers = {
-    api: require('./api/router')
-};
-app.use('/api', routers.api);
-
-// // serve correct js file
-// app.get('/td.js', function(req, res, next) {
-//     // logger.log('GET', req.url, '-> serving ../dist/hawk.js');
-//     res.sendFile(path.join(__dirname, '../dist/td.js'));
-// });
+app.use('/api', require('./api/router'));
 
 // if file exists in dist, serve it
-_.each(fs.readdirSync(path.resolve(__dirname, '../dist')), function(file) {
-    app.get('/'+file, function(req, res, next) {
+fs.readdirSync(path.resolve(__dirname, '../dist')).forEach((file) => {
+    app.get('/'+file, function(req, res) {
         res.sendFile(path.join(__dirname, '../dist/'+file));
     });
 });
-
-// app.get('/icons/:file', function(req, res, next) {
-//     // logger.log('GET', req.url, '-> serving ../icons/' + req.params.file);
-//     res.sendFile(path.join(__dirname, '../icons/' + req.params.file));
-// });
-
-// everything else gets routed to index.html
-app.get('*', function(req, res, next) {
-    // logger.log('GET', req.url,'-> serving ../dist/index.html');
+app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+// redirect to index instead of 404
+app.get('*', function(req, res) {
+    res.redirect('/');
 });
 
 const port = process.env.PORT || 4000;
