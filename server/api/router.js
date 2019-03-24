@@ -21,6 +21,7 @@ const db = {
 };
 
 logger.log('Connecting to database @', db.url);
+mongoose.set('useCreateIndex', true);
 mongoose.connect(db.url, db.options, function(err) {
     if (err) {
         logger.error('Could not connect to database:', err.stack);
