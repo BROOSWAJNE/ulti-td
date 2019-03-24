@@ -1,5 +1,3 @@
-const moment = require('moment');
-
 const COLOR = {
     undefined: '',
     Reset: '\x1b[0m',
@@ -26,27 +24,69 @@ const COLOR = {
     BgCyan: '\x1b[46m',
     BgWhite: '\x1b[47m',
 };
+const LEVELS = {
+    'info': { priority: 2 },
+    'log': { priority: 1, color: 'Dim' },
+    'debug': { priority: 0, color: 'Bright' },
+    'error': { priority: 4, color: 'FgRed' },
+    'warn': { priority: 3, color: 'FgYellow' },
+};
 
-function output(args, color) {
-    const timestamp = `\x1b[90m[${new moment().format('YYYY-MM-DD@HH:mm:ss:SSS')}]\x1b[0m`;
-    process.stdout.write([
-        timestamp,
-        COLOR[color],
-        ...args,
-        COLOR.Reset,
-        '\n',
-    ].join(''));
+const moment = require('moment');
+function write({ stream, level }, ...args) {
+    const timestamp = (new moment()).format('\\[YYYY-MM-DD@HH:mm:ss:SSS\\]');
+    if (process.env.NODE_ENV === 'production') {
+        stream.write([
+            timestamp,
+            `[${level}]`,
+            ...args,
+        ].join(' ') + '\n');
+    } else if (level in LEVELS) {
+        let color = LEVELS[level].color;
+        stream.write([
+            `\x1b[90m${timestamp}\x1b[0m `,
+            COLOR[color],
+            ...args.join(' '),
+            COLOR.Reset,
+            '\n',
+        ].join(''));
+    } else {
+        stream.write([
+            `\x1b[90m${timestamp}\x1b[0m `,
+            COLOR.Dim,
+            `[${level}] `,
+            ...args.join(' '),
+            COLOR.Reset,
+            '\n',
+        ].join(''));
+    }
 }
 
-module.exports = {
-    // general purpose
-    info: (...args) => output(args),
-    // for unimportant logging
-    log: (...args) => output(args, 'Dim'),
-    // for debugging
-    debug: (...args) => output(args, 'Bright'),
-    // for errors
-    error: (...args) => output(args, 'FgRed'),
-    // for warnings
-    warn: (...args) => output(args, 'FgYellow'),
-};
+const { Writable } = require('stream');
+const morgan = require('morgan');
+class Logger {
+    constructor({ stream = process.stdout, level = 0 } = {}) {
+        this.stream = stream;
+        this.levels = Object.keys(LEVELS);
+
+        this.levels.forEach((level) => {
+            this[level] = (...args) => write({ stream: this.stream, level }, ...args);
+        });
+    }
+
+    wrap(app) {
+        const morganStream = new Writable({
+            write: (chunk, encoding, cb) => {
+                write({ stream: this.stream, level: 'res' }, chunk.toString().replace(/\n$/, ''));
+                cb();
+            },
+        });
+        app.use((req, res, next) => {
+            write({ stream: this.stream, level: 'req' }, req.method, req.originalUrl);
+            next();
+        });
+        app.use(morgan('tiny', { stream: morganStream }));
+    }
+}
+
+module.exports = new Logger();
