@@ -76,16 +76,16 @@
                             <i class="subscript far fa-fw fa-copy"></i>
                         </div>
                     </button>
-                    <button class="invite-link invite-link-view" :title="(invite_links_expanded[invite.name] ? 'Hide' : 'View') + ' invite link'"
-                        v-on:click="$set(invite_links_expanded, invite.name, !invite_links_expanded[invite.name])"
-                        v-bind:class="{ expanded: invite_links_expanded[invite.name] }">
+                    <button class="invite-link invite-link-view" :title="(inviteLinksExpanded[invite.name] ? 'Hide' : 'View') + ' invite link'"
+                        v-on:click="$set(inviteLinksExpanded, invite.name, !inviteLinksExpanded[invite.name])"
+                        v-bind:class="{ expanded: inviteLinksExpanded[invite.name] }">
                         <div class="fa-combiner">
                             <i class="fas fa-fw fa-link"></i>
                             <i class="subscript far fa-fw fa-eye"></i>
                             <i class="subscript far fa-fw fa-eye-slash"></i>
                         </div>
                     </button>
-                    <pre class="invite-link" v-bind:class="{ expanded : invite_links_expanded[invite.name] }">blah</pre>
+                    <pre class="invite-link" v-bind:class="{ expanded : inviteLinksExpanded[invite.name] }">blah</pre>
                     <button class="delete" title="Remove team invite" v-on:click="onRemoveInvite(invite)">
                         <i class="fas fa-fw fa-times"></i>
                     </button>
@@ -93,8 +93,8 @@
             </div>
             <div class="new-invite input">
                 <input type="text" placeholder="Team Name" class="team-name has-submit"
-                    v-model="new_invite.name" v-on:keyup.enter.stop="onAddInvite" :class="{ invalid: new_invite.invalid }"
-                    @keyup.="$set(new_invite, 'invalid', false)">
+                    v-model="newInvite.name" v-on:keyup.enter.stop="onAddInvite" :class="{ invalid: newInvite.invalid }"
+                    @keyup.="$set(newInvite, 'invalid', false)">
                 <button class="input-submit-button" v-on:click="onAddInvite"><i class="fas fa-plus"></i></button>
             </div>
         </section>
@@ -102,10 +102,10 @@
         <button class="submit action-button"
             v-bind:class="{ saving: loading.saving }"
             v-bind:disabled="!validate() || loading.saving"
-            v-on:click="onClickSave" v-if="!save_success">
+            v-on:click="onClickSave" v-if="!saveSuccess">
             {{ loading.saving ? 'Saving...' : 'Save' }}
         </button>
-        <button class="submit success action-button ghost-button" v-if="save_success" disabled="disabled">
+        <button class="submit success action-button ghost-button" v-if="saveSuccess" disabled="disabled">
             <i class="icon fas fa-check"></i><span class="text">Saved Successfully</span>
         </button>
     </div>
@@ -122,22 +122,22 @@ export default {
         return {
             loading: {
                 authenticating: false,
-                saving: false
+                saving: false,
             },
             error: {
                 auth:'',
-                tournament: ''
+                tournament: '',
             },
-            save_success: false,
+            saveSuccess: false,
 
             tournament: null,
-            new_invite: {
-                name: ''
+            newInvite: {
+                name: '',
             },
-            invite_links_expanded: {},
+            inviteLinksExpanded: {},
 
             authenticated: false,
-            password: ''
+            password: '',
         };
     },
     computed: {
@@ -147,8 +147,8 @@ export default {
             },
             set: function(desc) {
                 this.tournament.settings.description = encodeURIComponent(desc);
-            }
-        }
+            },
+        },
     },
     mounted: function() {
         this.$refs.input_password.focus();
@@ -159,7 +159,7 @@ export default {
 
             this.loading.authenticating = true;
             this.$api.post('/auth/tournament/moniker/' + this.moniker, {
-                password: this.password
+                password: this.password,
             }).then((res) => {
                 this.tournament = res.data;
                 this.authenticated = true;
@@ -185,9 +185,9 @@ export default {
 
             this.$api.patch('/tournament/' + this.tournament._id, this.tournament).then((res) => {
                 this.tournament = res.data;
-                this.save_success = true;
+                this.saveSuccess = true;
                 let watcher = this.$watch(() => JSON.stringify(this.tournament), () => {
-                    this.save_success = false;
+                    this.saveSuccess = false;
                     watcher(); // stop watching
                 });
             }).catch((err) => {
@@ -197,20 +197,20 @@ export default {
             });
         },
         onAddInvite: function() {
-            let existing = _.find(this.tournament.invites, invite => invite.name === this.new_invite.name);
+            let existing = _.find(this.tournament.invites, invite => invite.name === this.newInvite.name);
             if (existing) {
-                this.$set(this.new_invite, 'invalid', true);
+                this.$set(this.newInvite, 'invalid', true);
             } else {
                 this.tournament.invites.push({
-                    name: this.new_invite.name
+                    name: this.newInvite.name,
                 });
-                this.new_invite.name = '';
+                this.newInvite.name = '';
             }
         },
         onRemoveInvite: function(invite) {
             this.tournament.invites.splice(this.tournament.invites.indexOf(invite), 1);
-        }
-    }
+        },
+    },
 };
 </script>
 

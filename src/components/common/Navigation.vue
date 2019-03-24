@@ -34,7 +34,7 @@ export default {
     name: 'Navigation',
     data: function() {
         return {
-            expanded: false
+            expanded: false,
         };
     },
     computed: {
@@ -44,7 +44,7 @@ export default {
             return this.$route.name === 'home';
         },
         links: function() {
-            switch(this.$route.name) {
+            switch (this.$route.name) {
             case 'tournament':
                 return [
                     {
@@ -52,19 +52,19 @@ export default {
                         icon: 'fa-tools',
                         to: {
                             name: 'tournament-settings',
-                            params: { moniker: this.$route.params.moniker }
-                        }
+                            params: { moniker: this.$route.params.moniker },
+                        },
                     },
                     {
                         title: 'Team Panel',
                         icon: 'fa-users',
-                        to: { name: 'home' }
-                    }
+                        to: { name: 'home' },
+                    },
                 ];
             default:
                 return [];
             }
-        }
+        },
     },
     watch: {
         '$route': function(route) {
@@ -72,8 +72,8 @@ export default {
                 this.expanded = false;
                 this.$emit('toggleExpand', this.expanded);
             }
-        }
-    }
+        },
+    },
 };
 </script>
 

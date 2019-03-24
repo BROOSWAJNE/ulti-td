@@ -53,12 +53,12 @@ export default {
         return {
             expanded: {
                 new: false,
-                find: false
+                find: false,
             },
             inputs: {
                 new: '',
-                find: ''
-            }
+                find: '',
+            },
         };
     },
     methods: {
@@ -66,7 +66,7 @@ export default {
             if (!this.inputs.new) return;
             this.$router.push({
                 name: 'tournament-creator',
-                query: { name: this.inputs.new }
+                query: { name: this.inputs.new },
             });
         },
         onFindTournament() {
@@ -74,7 +74,7 @@ export default {
             if (!this.inputs.find) return;
             this.$router.push({
                 name: 'tournament',
-                params: { moniker: this.inputs.find }
+                params: { moniker: this.inputs.find },
             });
         },
         expandInput(input) {
@@ -82,8 +82,8 @@ export default {
             setTimeout(() => {
                 this.expanded[input] ? this.$refs['input_'+input].focus() : this.$refs['input_'+input].blur();
             }, 0);
-        }
-    }
+        },
+    },
 };
 </script>
 

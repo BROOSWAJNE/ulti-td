@@ -12,15 +12,15 @@ Vue.prototype.$api = axios.create({
     timeout: 10000,
     headers: {
         Accept: 'application/json',
-        'Content-Type': 'application/json'
-    }
+        'Content-Type': 'application/json',
+    },
 });
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
     state: {
         //
-    }
+    },
 });
 
 new Vue({
@@ -28,5 +28,5 @@ new Vue({
     router,
     store,
     components: { App },
-    template: '<App/>'
+    template: '<App/>',
 });

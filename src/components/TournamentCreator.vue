@@ -2,7 +2,7 @@
 <div class="TournamentCreator">
     <div class="success-container" v-if="created">
         <span class="message">Success! Your tournament is live at:</span>
-        <pre class="link">{{ tournament_url }}</pre>
+        <pre class="link">{{ tournamentURL }}</pre>
         <span class="message">
             You can use your <router-link v-bind:to="{ name: 'tournament-settings', params: { moniker: moniker }}">admin page</router-link> to add teams to the tournament.
         </span>
@@ -18,20 +18,20 @@
             <label for="moniker"
                 title="The unique identifier used to create the link to your tournament">
                 Identifier (required) <span class="example-url">
-                    {{ 'ulti.td/t/'+encodeURIComponent(moniker) }}
+                    {{ tournamentURL.replace(/^https?:\/\//, '') }}
                 </span>
             </label>
             <input type="text" class="input moniker" v-model="moniker"
-                v-on:keyup="user_moniker = true; moniker_exists = false" tabindex="-1"
-                v-bind:class="{ auto : !user_moniker, invalid : moniker_exists }"
+                v-on:keyup="userMoniker = true; monikerExists = false" tabindex="-1"
+                v-bind:class="{ auto : !userMoniker, invalid : monikerExists }"
                 v-bind:disabled="saving">
             <label for="description">Description</label>
             <textarea v-model="description" v-bind:disabled="saving"></textarea>
             <label for="tournament-dates">Dates</label>
             <div class="setting tournament-dates">
-                <input type="date" v-model="start_date">
+                <input type="date" v-model="startDate">
                 <span>to</span>
-                <input type="date" v-model="end_date">
+                <input type="date" v-model="endDate">
             </div>
         </section>
         <section class="admin-settings">
@@ -41,60 +41,60 @@
                 tournament settings, view teams entered, review spirit scores, and more.
             </span>
             <label for="password">Admin Password (required)</label>
-            <input type="password" v-model="admin_pass" v-bind:disabled="saving">
+            <input type="password" v-model="adminPassword" v-bind:disabled="saving">
         </section>
         <section class="spirit-settings">
             <span class="section-title">Spirit Settings</span>
             <div class="setting spirit-self"
-                v-on:click="self_spirit = !self_spirit"
-                v-bind:class="{ disabled : public_spirit || saving }"
+                v-on:click="spiritSelf = !spiritSelf"
+                v-bind:class="{ disabled : spiritPublic || saving }"
                 title="Full spirit score breakdowns ">
-                <div class="checkbox" v-bind:class="{ checked : public_spirit || self_spirit }"
-                tabindex="0" v-on:keyup.space="self_spirit = !self_spirit">
+                <div class="checkbox" v-bind:class="{ checked : spiritPublic || spiritSelf }"
+                tabindex="0" v-on:keyup.space="spiritSelf = !spiritSelf">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Let teams see their own spirit scores</span>
             </div>
             <div class="setting spirit-public"
-                v-on:click="public_spirit = !public_spirit"
+                v-on:click="spiritPublic = !spiritPublic"
                 v-bind:class="{ disabled : saving }"
                 title="Full spirit score breakdowns will be available from your tournament's summary page">
-                <div class="checkbox" v-bind:class="{ checked : public_spirit }"
-                tabindex="0" v-on:keyup.space="public_spirit = !public_spirit">
+                <div class="checkbox" v-bind:class="{ checked : spiritPublic }"
+                tabindex="0" v-on:keyup.space="spiritPublic = !spiritPublic">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Make all spirit scores public</span>
             </div>
             <div class="setting spirit-enforce"
-                v-on:click="enforce_spirit = !enforce_spirit"
+                v-on:click="spiritEnforce = !spiritEnforce"
                 v-bind:class="{ disabled : saving }"
                 title="Forces teams to submit spirit scores for their matches before they are able to submit the match's results">
-                <div class="checkbox" v-bind:class="{ checked : enforce_spirit }"
-                tabindex="0" v-on:keyup.space="enforce_spirit = !enforce_spirit">
+                <div class="checkbox" v-bind:class="{ checked : spiritEnforce }"
+                tabindex="0" v-on:keyup.space="spiritEnforce = !spiritEnforce">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Require submitting spirit scores before submitting match scores</span>
             </div>
             <div class="setting comments-extreme"
-                v-on:click="extreme_comments = !extreme_comments"
-                v-bind:class="{ disabled : enforce_comments || saving }"
+                v-on:click="commentsExtreme = !commentsExtreme"
+                v-bind:class="{ disabled : commentsEnforce || saving }"
                 title="Forces teams to leave comments when giving spirit scores of 0 or 4 in any category">
-                <div class="checkbox" v-bind:class="{ checked : enforce_comments || extreme_comments }"
-                    tabindex="0" v-on:keyup.space="extreme_comments = !extreme_comments">
+                <div class="checkbox" v-bind:class="{ checked : commentsEnforce || commentsExtreme }"
+                    tabindex="0" v-on:keyup.space="commentsExtreme = !commentsExtreme">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Enforce comments for extreme scores</span>
             </div>
             <div class="setting comments-enforce"
-                v-on:click="enforce_comments = !enforce_comments"
+                v-on:click="commentsEnforce = !commentsEnforce"
                 v-bind:class="{ disabled : saving }"
                 title="Forces teams to leave comments when giving spirit scores lower/higher than 2 in any category">
-                <div class="checkbox" v-bind:class="{ checked : enforce_comments }"
-                    tabindex="0" v-on:keyup.space="enforce_comments = !enforce_comments">
+                <div class="checkbox" v-bind:class="{ checked : commentsEnforce }"
+                    tabindex="0" v-on:keyup.space="commentsEnforce = !commentsEnforce">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
@@ -104,27 +104,27 @@
         <section class="team-settings">
             <span class="section-title">Team Settings</span>
             <div class="setting require-register"
-                v-on:click="require_registration = !require_registration"
+                v-on:click="registrationRequired = !registrationRequired"
                 v-bind:class="{ disabled : saving }"
                 title="This option is recommended to be left on, as otherwise teams will too easily be able to submit fake scores">
-                <div class="checkbox" v-bind:class="{ checked: require_registration }"
-                    tabindex="0" v-on:keyup.space="require_registration = !require_registration">
+                <div class="checkbox" v-bind:class="{ checked: registrationRequired }"
+                    tabindex="0" v-on:keyup.space="registrationRequired = !registrationRequired">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
                 <span class="label">Require registration to submit scores</span>
             </div>
             <span class="section-description">
-                {{ require_registration ?
+                {{ registrationRequired ?
                     'Teams are required to accept their invite and log in with their chosen password to submit match and/or spirit scores.' :
                     'Anyone can submit spirit and/or match scores by choosing which team they want to submit as.' }}
             </span>
             <div class="setting open-invites"
-                v-on:click="open_invites = !open_invites"
+                v-on:click="invitesOpen = !invitesOpen"
                 v-bind:class="{ disabled : saving }"
                 title="Allow anyone to request a tournament invite through your tournament's summary page">
-                <div class="checkbox" v-bind:class="{ checked: open_invites }"
-                    tabindex="0" v-on:keyup.space="open_invites = !open_invites">
+                <div class="checkbox" v-bind:class="{ checked: invitesOpen }"
+                    tabindex="0" v-on:keyup.space="invitesOpen = !invitesOpen">
                     <i class="fas fa-square"></i>
                     <i class="fas fa-check-square"></i>
                 </div>
@@ -155,70 +155,70 @@ export default {
             saving: false,
             error: '',
             created: false,
-            moniker_exists: false,
+            monikerExists: false,
 
             // tournament data
             name: this.$route.query.name || '',
             moniker: constructMoniker(this.$route.query.name) || '',
             description: `Welcome to ${this.$route.query.name}!`,
-            user_moniker: false, // whether user has defined the moniker
+            userMoniker: false, // whether user has defined the moniker
 
-            start_date: '',
-            end_date: '',
+            startDate: '',
+            endDate: '',
 
-            self_spirit: true,
-            public_spirit: true,
-            enforce_spirit: false,
-            extreme_comments: true,
-            enforce_comments: false,
+            spiritSelf: true,
+            spiritPublic: true,
+            spiritEnforce: false,
+            commentsExtreme: true,
+            commentsEnforce: false,
 
-            require_registration: true,
-            open_invites: false,
+            registrationRequired: true,
+            invitesOpen: false,
 
-            admin_pass: ''
+            adminPassword: '',
         };
     },
     computed: {
-        tournament_url: function() {
-            let url = new URL('/t/' + this.moniker, window.location);
+        tournamentURL: function() {
+            let url = new URL('/t/' + encodeURIComponent(this.moniker), window.location);
             return url.href;
         },
         valid: function() {
-            return this.name && this.moniker && this.admin_pass;
-        }
+            return this.name && this.moniker && this.adminPassword;
+        },
     },
     methods: {
         onKeyupName: function() {
-            if (this.user_moniker) return;
+            if (this.userMoniker) return;
             this.moniker = constructMoniker(this.name);
         },
         getTournamentData: function() {
             return {
                 name: this.name,
                 moniker: encodeURIComponent(this.moniker),
-                password: this.admin_pass,
+                password: this.adminPassword,
                 settings: {
                     description: encodeURIComponent(this.description),
                     dates: {
-                        start: this.start_date ? new Date(this.start_date) : undefined,
-                        end: this.end_date ? new Date(this.end_date) : undefined
+                        start: this.startDate ? new Date(this.startDate) : undefined,
+                        end: this.endDate ? new Date(this.endDate) : undefined,
                     },
                     spirit: {
                         publish: {
-                            self: this.public_spirit || this.self_spirit,
-                            all: this.public_spirit
+                            self: this.spiritPublic || this.spiritSelf,
+                            all: this.spiritPublic,
                         },
-                        enforce: this.enforce_spirit,
+                        enforce: this.spiritEnforce,
                         comments: {
-                            extreme: this.extreme_comments || this.enforce_comments,
-                            enforce: this.enforce_comments
-                        }
+                            extreme: this.commentsExtreme || this.commentsEnforce,
+                            enforce: this.commentsEnforce,
+                        },
                     },
                     teams: {
-                        require_registration: this.require_registration,
-                        open_invites: this.open_invites
-                    }
-                }
+                        registrationRequired: this.registrationRequired,
+                        invitesOpen: this.invitesOpen,
+                    },
+                },
             };
         },
         onClickCreate: function() {
@@ -228,7 +228,7 @@ export default {
 
             this.$api.get('/tournament').then((res) => {
                 if (res.data.map(t => t.moniker).includes(encodeURIComponent(this.moniker))) {
-                    this.moniker_exists = true;
+                    this.monikerExists = true;
                     throw 'A tournament with this identifier already exists';
                 }
                 return this.$api.post('/tournament/new', this.getTournamentData());
@@ -240,8 +240,8 @@ export default {
             }).finally(() => {
                 this.saving = false;
             });
-        }
-    }
+        },
+    },
 };
 </script>
 

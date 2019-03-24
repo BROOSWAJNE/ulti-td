@@ -10,6 +10,7 @@
     "build": "parcel build src/index.html",
     "start": "node server/server.js",
     "lint": "eslint . --ext .js,.vue",
+    "fixlint": "eslint . --fix --ext .js,.vue",
     "postinstall": "npm run lint"
   },
   "author": "Willem Garnier",

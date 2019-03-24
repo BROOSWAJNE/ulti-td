@@ -2,43 +2,43 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const TeamSchema = new Schema({
-    created_at: {
+    'created_at': {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
-    name: {
+    'name': {
         type: String,
-        required: true
+        required: true,
     },
-    password: {
+    'password': {
         type: String,
-        select: false
+        select: false,
     },
-    tournaments: [{
+    'tournaments': [{
         type: Schema.Types.ObjectId,
-        ref: 'Tournament'
+        ref: 'Tournament',
     }],
-    players: [{
-        type: String
-    }]
+    'players': [{
+        type: String,
+    }],
 });
 
 const TeamModel = mongoose.model('Team', TeamSchema);
 
 module.exports = {
     model: TeamModel,
-    custom_routes: {
+    customRoutes: {
         'get': {
             '/tournament/:id': function(req, res, next) {
                 logger.log(req.method, req.originalUrl);
 
                 TeamModel.find({
-                    tournaments: req.params.id
+                    tournaments: req.params.id,
                 }, function(err, result) {
-                    if (err) return next(err);
+                    if (err) return void next(err);
                     res.status(200).json(result);
                 });
-            }
-        }
-    }
+            },
+        },
+    },
 };

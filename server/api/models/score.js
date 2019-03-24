@@ -2,30 +2,30 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const ScoreSchema = new Schema({
-    created_at: {
+    'created_at': {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
-    tournament: [{
+    'tournament': [{
         type: Schema.Types.ObjectId,
         ref: 'Tournament',
-        required: true
+        required: true,
     }],
-    teams: [{
-        team: {
+    'teams': [{
+        'team': {
             type: Schema.Types.ObjectId,
             ref: 'Team',
-            required: true
+            required: true,
         },
-        points: {
+        'points': {
             type: Number,
-            required: true
-        }
-    }]
+            required: true,
+        },
+    }],
 });
 
 const ScoreModel = mongoose.model('Score', ScoreSchema);
 
 module.exports = {
-    model: ScoreModel
+    model: ScoreModel,
 };

@@ -13,11 +13,11 @@ import NavigationView from './components/common/Navigation';
 export default {
     name: 'App',
     components: {
-        NavigationView
+        NavigationView,
     },
     data: function() {
         return { nav_expanded: false };
-    }
+    },
 };
 </script>
 

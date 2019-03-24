@@ -33,7 +33,7 @@ export default {
     data: function() {
         return {
             loading: false,
-            tournaments: null
+            tournaments: null,
         };
     },
     methods: {
@@ -50,8 +50,8 @@ export default {
         },
         formatDate: function(date) {
             return new moment(date).format('Do MMMM YYYY HH:mm');
-        }
-    }
+        },
+    },
 };
 </script>
 

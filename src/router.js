@@ -15,29 +15,29 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            component: Home
+            component: Home,
         },
         {
             path: '/new',
             name: 'tournament-creator',
-            component: TournamentCreator
+            component: TournamentCreator,
         },
         {
             path: '/list',
             name: 'tournament-list',
-            component: TournamentList
+            component: TournamentList,
         },
         {
             path: '/t/:moniker',
             name: 'tournament',
             component: TournamentSummary,
-            props: true
+            props: true,
         },
         {
             path: '/t/:moniker/settings',
             name: 'tournament-settings',
             component: TournamentSettings,
-            props: true
-        }
-    ]
+            props: true,
+        },
+    ],
 });

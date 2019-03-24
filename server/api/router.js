@@ -17,7 +17,7 @@ _.each(fs.readdirSync(path.resolve(__dirname, './models')), function(model) {
 
 const db = {
     url: process.env.DB_URL || 'mongodb://localhost/td',
-    options: { useNewUrlParser: true }
+    options: { useNewUrlParser: true },
 };
 
 logger.log('Connecting to database @', db.url);
@@ -44,7 +44,7 @@ mongoose.connect(db.url, db.options, function(err) {
             logger.log(req.method, req.originalUrl);
 
             model.model.findById(req.params.id, function(err, result) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).json(result);
             });
         });
@@ -54,7 +54,7 @@ mongoose.connect(db.url, db.options, function(err) {
             logger.log(req.method, req.originalUrl);
 
             model.model.find(function(err, result) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).json(result);
             });
         });
@@ -65,7 +65,7 @@ mongoose.connect(db.url, db.options, function(err) {
 
             let doc = new model.model(req.body);
             doc.save(function(err, result) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).json(result);
             });
         });
@@ -77,7 +77,7 @@ mongoose.connect(db.url, db.options, function(err) {
             model.model.findByIdAndUpdate(req.params.id, req.body, {
                 new: true, // return new doc instead of original
             }, function(err, result) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).json(result);
             });
         });
@@ -88,7 +88,7 @@ mongoose.connect(db.url, db.options, function(err) {
             logger.log(req.method, req.originalUrl);
 
             model.model.deleteOne({ _id: req.params.id }, function(err) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).send('Success');
             });
         });
@@ -98,7 +98,7 @@ mongoose.connect(db.url, db.options, function(err) {
             logger.log(req.method, req.originalUrl);
 
             model.model.deleteMany({}, function(err) {
-                if (err) return next(err);
+                if (err) return void next(err);
                 res.status(200).send('Success');
             });
         });
@@ -132,9 +132,9 @@ mongoose.connect(db.url, db.options, function(err) {
 });
 
 // close connection properly when exiting server process
-process.on('SIGINT', function(){
+process.on('SIGINT', function() {
     logger.log('Gracefully exiting');
-    mongoose.connection.close(function(){
+    mongoose.connection.close(function() {
         logger.info('Terminated mongoose connection');
         process.exit(0);
     });

@@ -42,7 +42,7 @@ if (process.env.NODE_ENV === 'production') { // TODO: enable https for prod
 } else {
     https.createServer({
         key: fs.readFileSync('config/keys/key.pem'),
-        cert: fs.readFileSync('config/keys/server.crt')
+        cert: fs.readFileSync('config/keys/server.crt'),
     }, app).listen(port, function() {
         logger.info('Server started successfully. Listening @ 127.0.0.1:' + port);
     });

@@ -28,12 +28,12 @@ const COLOR = {
 };
 
 function output(args, color) {
-    let arg_array = Array.prototype.slice.call(args);
+    let argArr = Array.prototype.slice.call(args);
 
     let timestamp = '\x1b[90m[' + new moment().format('YYYY-MM-DD@HH:mm:ss:SSS') + ']\x1b[0m';
 
     // eslint-disable-next-line
-    console.log.apply(this, [timestamp + COLOR[color]].concat(arg_array).concat(['\x1b[0m']));
+    console.log.apply(this, [timestamp + COLOR[color]].concat(argArr).concat(['\x1b[0m']));
 }
 
 module.exports = {
@@ -56,5 +56,5 @@ module.exports = {
     // for warnings
     warn: function() {
         output(arguments, 'FgYellow');
-    }
+    },
 };

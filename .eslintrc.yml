@@ -25,8 +25,9 @@ rules:
         - error
     no-unused-vars:
         - error
-        - args: none
-        - ignoreRestSiblings: true
+        -
+            args: none
+            ignoreRestSiblings: true
     eol-last:
         - error
         - always
@@ -75,6 +76,7 @@ rules:
         - all
     consistent-return:
         - warn
+        - treatUndefinedAsUnspecified: true
 globals:
     logger: false
     _: false

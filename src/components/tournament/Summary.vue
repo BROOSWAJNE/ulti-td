@@ -40,10 +40,10 @@ export default {
         return {
             loading: {
                 tournament: true,
-                teams: true
+                teams: true,
             },
             tournament: null,
-            teams: null
+            teams: null,
         };
     },
     methods: {
@@ -54,8 +54,8 @@ export default {
                 this.teams = res.data;
                 this.loading.teams = false;
             });
-        }
-    }
+        },
+    },
 };
 </script>
 
