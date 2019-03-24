@@ -32,7 +32,7 @@ mongoose.connect(db.url, db.options, function(err) {
     _.each(models, function(model, name) {
         // logger.log('Initializing routes for model:', name);
 
-        _.each(model.custom_routes, function(routes, method) {
+        _.each(model.customRoutes, function(routes, method) {
             _.each(routes, function(fn, route) {
                 // logger.debug(method, '/'+name+route);
                 router[method]('/'+name+route, fn);
@@ -112,7 +112,7 @@ mongoose.connect(db.url, db.options, function(err) {
 
     // initialize auth endpoints
     _.each(models, function(model, name) {
-        _.each(model.auth_routes, function(routes, method) {
+        _.each(model.authRoutes, function(routes, method) {
             _.each(routes, function(fn, route) {
                 if (_.isArray(fn)) // has middleware
                     router[method].apply(router, ['/auth/'+name+route].concat(fn));
